@@ -6,9 +6,9 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-excalibur-py = "*"
 lxml = "*"
 docopt = "*"
+camelot-py = "*"
 
 [requires]
 python_version = "3.8"
