@@ -1,5 +1,13 @@
 # MyNumberCard Dashboard
 
+
+## DEPENDENCIES
+
+Ghostscipt
+```
+brew install ghostscript
+```
+
 ## INSTALL
 
 ```
