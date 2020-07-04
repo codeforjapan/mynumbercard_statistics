@@ -1,9 +1,20 @@
+"""Usage: app.py [-h] [--all]
+
+Process some integers.
+
+Options:
+  -h, --help  show this help message and exit
+  --all       get all data
+"""
 import os
 import json
 import pprint
 
 import urllib.request
 import lxml.html
+from docopt import docopt
+
+args = docopt(__doc__) 
 
 # url of the mynumber card PDF
 PDF_URL = "https://www.soumu.go.jp/kojinbango_card/"
@@ -11,7 +22,8 @@ PDF_URL = "https://www.soumu.go.jp/kojinbango_card/"
 DATA_FILE = "./data/loaded_files.json"
 # load data file
 loaded = []
-if (os.path.exists(DATA_FILE)):
+
+if (not args.get('--all') and os.path.exists(DATA_FILE)):
   with open(DATA_FILE) as f:
     loaded = json.load(f)
 

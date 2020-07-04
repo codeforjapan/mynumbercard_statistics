@@ -8,6 +8,7 @@ verify_ssl = true
 [packages]
 excalibur-py = "*"
 lxml = "*"
+docopt = "*"
 
 [requires]
 python_version = "3.8"
