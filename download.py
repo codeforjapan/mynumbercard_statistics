@@ -1,6 +1,6 @@
-"""Usage: app.py [-h] [--all]
+"""Usage: download.py [-h] [--all]
 
-Process some integers.
+Read (all) PDF file and save as CSV file of extracted tables.
 
 Options:
   -h, --help  show this help message and exit
