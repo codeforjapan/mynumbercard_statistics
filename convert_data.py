@@ -68,7 +68,7 @@ def save_csv(ymd: str, data: list, ftype:FILETYPE):
   with open(OUT_DIR + "/" + date.strftime('{0}/{1}.csv'.format(ymd, ftype.value)), 'w') as f:
     writer = csv.writer(f, quoting=csv.QUOTE_NONNUMERIC)
     writer.writerows(data)
-  print('saved {0} lines for {1}.csv'.format(len(data), ftype.value))
+  print('* saved {0} lines for {1}.csv'.format(len(data), ftype.value))
 
 RAW_DIR = './data/raw'
 OUT_DIR = './data/out'
@@ -123,13 +123,17 @@ for key in loaded.keys():
       else:
         l.extend(prefectures)
         prefectures = l
+    if (l[0][0] == '年齢'):
+      demographic = l
   # save extended data
   ymd = date.strftime('%Y%m%d')
   if (not os.path.exists(OUT_DIR + "/" + ymd)):
     os.makedirs(OUT_DIR + "/" + ymd)  
-  # list of 基礎自治体
-  save_csv(ymd, localgovs, FILETYPE.LOCALGOVS)
-  # list of 基礎自治体
+  # list of 団体区分別
   save_csv(ymd, types, FILETYPE.TYPES)
+  # list of 男女・年齢別
+  save_csv(ymd, demographic, FILETYPE.DEMOGRAPHIC)
   # list of 都道府県一覧
   save_csv(ymd, prefectures, FILETYPE.PREFECTURES)
+  # list of 基礎自治体
+  save_csv(ymd, localgovs, FILETYPE.LOCALGOVS)
