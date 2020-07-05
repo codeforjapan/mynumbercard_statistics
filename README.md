@@ -1,5 +1,7 @@
 # MyNumberCard Dashboard
 
+マイナンバーカードの交付率のダッシュボードです。
+https://www.soumu.go.jp/kojinbango_card/ にあるPDF、「マイナンバーカード交付状況について」からCSVデータを抜き出し、CSVとして保存しています。
 
 ## DEPENDENCIES
 
