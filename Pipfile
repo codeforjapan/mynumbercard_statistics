@@ -9,6 +9,7 @@ verify_ssl = true
 lxml = "*"
 docopt = "*"
 camelot-py = "*"
+natsort = "*"
 
 [requires]
 python_version = "3.8"
