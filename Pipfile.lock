@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "04735fd867473f67656fd37651d6e829cf209c165f6309a57ffc0a18da108c76"
+            "sha256": "e7beaaa705cb49fd9bab5d88dfa1189f8f03cf3a8bd042df8f8e2cf22f359675"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -53,12 +53,25 @@
             ],
             "version": "==1.0.1"
         },
+        "japanera": {
+            "hashes": [
+                "sha256:d064cdc957669869d391711d360756e38f29e4fadf69bfd5bc1fa3009a12660a"
+            ],
+            "index": "pypi",
+            "version": "==0.0.8"
+        },
         "jdcal": {
             "hashes": [
                 "sha256:1abf1305fce18b4e8aa248cf8fe0c56ce2032392bc64bbd61b5dff2a19ec8bba",
                 "sha256:472872e096eb8df219c23f2689fc336668bdb43d194094b5cc1707e1640acfc8"
             ],
             "version": "==1.4.1"
+        },
+        "kanjize": {
+            "hashes": [
+                "sha256:8f808b02acc8d2f2466792598460f2acf82aca49042f6b6ccf714ccd98e1cd29"
+            ],
+            "version": "==0.1.0"
         },
         "lxml": {
             "hashes": [
