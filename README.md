@@ -1,7 +1,15 @@
 # MyNumberCard Dashboard
 
+## Japanese
+
 マイナンバーカードの交付率のダッシュボードです。
-https://www.soumu.go.jp/kojinbango_card/ にあるPDF、「マイナンバーカード交付状況について」からCSVデータを抜き出し、CSVとして保存しています。
+`https://www.soumu.go.jp/kojinbango_card/` にあるPDF、「マイナンバーカード交付状況について」からCSVデータを抜き出し、CSVとして保存しています。
+
+## English
+
+This is a dashboard of the the my number card statistics.
+
+Extract and convert csv data from the PDF file under マイナンバーカード交付状況について on the `https://www.soumu.go.jp/kojinbango_card/`
 
 ## DEPENDENCIES
 
@@ -9,21 +17,13 @@ https://www.soumu.go.jp/kojinbango_card/ にあるPDF、「マイナンバーカ
 
 Please install Docker and Docker Compose
 
-### Python
-
-Install Python 3
-```
-brew install ghostscript
-pip install pipenv
-pipenv sync
-```
-
-## INSTALL
+# INSTALL
 
 ```
 git clone git@github.com:codeforjapan/mynumbercard_statistics.git
 ```
 
+# usage
 ## Download csv data from PDF file
 
 ```
@@ -54,10 +54,28 @@ This command will create below csv files under `data/out/{YYYYMMDD}/` dir.
 make download_and_convet
 ```
 
-## DEVELLOPMENT
-### When you want to add new libraries
+# GitHub Actions
+
+GitHub Actions will create new data and publish the data to the `gh-pages` branch.
+
+# DEVELOPMENT
+
+## Use Python
+
+Please install Python 3 and below dependencies
+```
+brew install ghostscript
+pip install pipenv
+```
+
+Then sync the libraries.
+```
+pipenv sync
+```
+
+## When you want to add new libraries
 
 ```
-pipenv install `library`
+pipenv install [new_library]
 docker-compose up -d --build
 ```
