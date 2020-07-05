@@ -5,9 +5,17 @@ https://www.soumu.go.jp/kojinbango_card/ にあるPDF、「マイナンバーカ
 
 ## DEPENDENCIES
 
-Ghostscipt
+### Use Docker
+
+Please install Docker and Docker Compose
+
+### Python
+
+Install Python 3
 ```
 brew install ghostscript
+pip install pipenv
+pipenv sync
 ```
 
 ## INSTALL
