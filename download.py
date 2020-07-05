@@ -27,7 +27,7 @@ def loadPDF(filepath: str):
   tables = camelot.read_pdf(filepath, pages = "1-end")
   print("Total tables extracted:", tables.n)
   for idx, table in enumerate(tables):
-    fname = './data/{0}_{1}.csv'.format(id, idx)
+    fname = './data/raw/{0}_{1}.csv'.format(id, idx)
     print(fname)
     table.to_csv(fname)
 
