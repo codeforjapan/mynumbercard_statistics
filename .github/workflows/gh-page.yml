@@ -1,0 +1,26 @@
+name: Build Dockerfile and Push Github page
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-and-push:
+
+    runs-on: ubuntu-18.04
+    timeout-minutes: 300
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: cache data dir
+      uses: actions/cache@preview
+      with:
+        path: data
+        key: ${{ runner.os }}-projectname-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
+        restore-keys:
+          ${{ runner.os }}-projectname-
+    - name: Build Image
+      run: |
+        make download_and_convert
+        
