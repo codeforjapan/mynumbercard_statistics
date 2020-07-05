@@ -15,6 +15,13 @@ from japanera import Japanera, EraDate, Era
 
 from natsort import natsorted
 
+from enum import Enum
+class FILETYPE(Enum):
+      TYPES = 'summary_by_types'
+      DEMOGRAPHIC = 'all_prefectures'
+      PREFECTURES = 'demographics'
+      LOCALGOVS = 'all_localgovs'
+      
 def extract_date(title: str):
   """extract date object from title string
 
@@ -50,6 +57,19 @@ def to_number(text: str):
       return int(text.replace(',', '').replace('%',''))
   return text
 
+def save_csv(ymd: str, data: list, ftype:FILETYPE):
+  """save csv file
+
+  Args:
+      ymd (str): the day of data YYYYMMDD
+      data (list): data
+      ftype (FILETYPE): file types
+  """
+  with open(OUT_DIR + "/" + date.strftime('{0}/{1}.csv'.format(ymd, ftype.value)), 'w') as f:
+    writer = csv.writer(f, quoting=csv.QUOTE_NONNUMERIC)
+    writer.writerows(data)
+  print('saved {0} lines for {1}.csv'.format(len(data), ftype.value))
+
 RAW_DIR = './data/raw'
 OUT_DIR = './data/out'
 # DATA FILE
@@ -68,8 +88,12 @@ with open(DATA_FILE) as f:
 if (not os.path.exists(OUT_DIR)):
   os.makedirs(OUT_DIR)
 
+# load csv data
 for key in loaded.keys():
-  output = []
+  types = []
+  localgovs = []
+  prefectures = []
+  demographic = []
   date = extract_date(loaded.get(key))
   if (not date):
     print('The system could not retrieve date string from the title "{0}" '.format(loaded.get(key)))
@@ -87,12 +111,18 @@ for key in loaded.keys():
       for row in reader:
         l.append(list(map(to_number, row)))
     if (l[0][0] == '都道府県名' and l[0][1] == '市区町村名'):
-      if (output == []):
-        output.extend(l)
+      if (localgovs == []):
+        localgovs.extend(l)
       else:
-        output.extend(l[2:])
+        localgovs.extend(l[2:])
+    if (l[0][0] == '区分'):
+      types = l
+    if (l[0][0] == '都道府県名' and l[0][1] != '市区町村名'):
+      prefectures = l
   # save extended data
-  with open(OUT_DIR + "/" + date.strftime('%Y%m%d.csv'), 'w') as f:
-    writer = csv.writer(f, quoting=csv.QUOTE_NONNUMERIC)
-    writer.writerows(output)
-  print('saved {0} lines'.format(len(output)))
+  if (not os.path.exists(OUT_DIR + "/" + date.strftime('%Y%m%d'))):
+    os.makedirs(OUT_DIR + "/" + date.strftime('%Y%m%d'))  
+  # list of 基礎自治体
+  save_csv(date.strftime('%Y%m%d'), localgovs, FILETYPE.LOCALGOVS)
+  # list of 基礎自治体
+  save_csv(date.strftime('%Y%m%d'), types, FILETYPE.TYPES)
