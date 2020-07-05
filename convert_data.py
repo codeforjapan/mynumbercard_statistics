@@ -9,6 +9,8 @@ import os
 import re
 import json
 import datetime
+import csv
+import pprint
 from japanera import Japanera, EraDate, Era
 
 from natsort import natsorted
@@ -35,6 +37,18 @@ def extract_date(title: str):
   ), "%-E%-o年%m月%d日")
   return mydate[0]
 
+def to_number(text: str):
+  """return number object if the text is number, otherwise return text
+
+  Args:
+      text (str): text
+  """
+  if (text.replace(',', '').replace('.', '').replace('-', '').replace('%', '').isnumeric()):
+    if ('.' in text):
+      return float(text.replace(',', '').replace('%',''))
+    else:
+      return int(text.replace(',', '').replace('%',''))
+  return text
 
 RAW_DIR = './data/raw'
 OUT_DIR = './data/out'
@@ -55,6 +69,7 @@ if (not os.path.exists(OUT_DIR)):
   os.makedirs(OUT_DIR)
 
 for key in loaded.keys():
+  output = []
   date = extract_date(loaded.get(key))
   if (not date):
     print('The system could not retrieve date string from the title "{0}" '.format(loaded.get(key)))
@@ -64,6 +79,20 @@ for key in loaded.keys():
   if (not os.path.exists(target_dir)):
     print('The data for the key {0} does not exists. Skip this key'.format(key))
     continue
-  for csv in natsorted(os.listdir(target_dir)):
-    print(csv)
-    
+  # read all csv file of the raw data
+  for csvfile in natsorted(os.listdir(target_dir)):
+    l = []
+    with open(target_dir + '/' + csvfile) as f:
+      reader = csv.reader(f)
+      for row in reader:
+        l.append(list(map(to_number, row)))
+    if (l[0][0] == '都道府県名' and l[0][1] == '市区町村名'):
+      if (output == []):
+        output.extend(l)
+      else:
+        output.extend(l[2:])
+  # save extended data
+  with open(OUT_DIR + "/" + date.strftime('%Y%m%d.csv'), 'w') as f:
+    writer = csv.writer(f, quoting=csv.QUOTE_NONNUMERIC)
+    writer.writerows(output)
+  print('saved {0} lines'.format(len(output)))
