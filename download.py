@@ -29,12 +29,16 @@ def loadPDF(filepath: str):
   if (not os.path.exists('./data/raw')):
     os.makedirs('./data/raw')
   for idx, table in enumerate(tables):
-    fname = './data/raw/{0}_{1}.csv'.format(id, idx)
+    fname = './data/raw/{0}/{1}.csv'.format(id, idx)
     print(fname)
+    if (not os.path.exists('./data/raw/{0}'.format(id))):
+      os.makedirs('./data/raw/{0}'.format(id))
+
     table.to_csv(fname)
 
 # url of the mynumber card PDF
 PDF_URL = "https://www.soumu.go.jp/kojinbango_card/"
+ABSOLUTE_URL = "https://www.soumu.go.jp/kojinbango_card/"
 # DATA FILE
 DATA_FILE = "./data/loaded_files.json"
 # load data file
@@ -44,10 +48,10 @@ if (not args.get('--all') and os.path.exists(DATA_FILE)):
     loaded = json.load(f)
 
 # download PDF files
-print('DOWNLOAD Mynumber file')
+print('DOWNLOAD statistics file')
 html = urllib.request.urlopen(PDF_URL).read()
 tree = lxml.html.fromstring(html)
-tree.make_links_absolute('https://www.soumu.go.jp/kojinbango_card/')
+tree.make_links_absolute(ABSOLUTE_URL)
 result = tree.xpath('//*[@id="contentsWrapper"]/div[2]/div[2]/div[4]/ul/li')
 
 # read PDF links
