@@ -26,6 +26,8 @@ def loadPDF(filepath: str):
   id = getFileID(filepath)
   tables = camelot.read_pdf(filepath, pages = "1-end")
   print("Total tables extracted:", tables.n)
+  if (not os.path.exists('./data/raw')):
+    os.makedirs('./data/raw')
   for idx, table in enumerate(tables):
     fname = './data/raw/{0}_{1}.csv'.format(id, idx)
     print(fname)
