@@ -18,8 +18,8 @@ from natsort import natsorted
 from enum import Enum
 class FILETYPE(Enum):
       TYPES = 'summary_by_types'
-      DEMOGRAPHIC = 'all_prefectures'
-      PREFECTURES = 'demographics'
+      DEMOGRAPHIC = 'demographics'
+      PREFECTURES = 'all_prefectures'
       LOCALGOVS = 'all_localgovs'
       
 def extract_date(title: str):
@@ -118,11 +118,18 @@ for key in loaded.keys():
     if (l[0][0] == '区分'):
       types = l
     if (l[0][0] == '都道府県名' and l[0][1] != '市区町村名'):
-      prefectures = l
+      if (prefectures == []):
+        prefectures = l[1:]
+      else:
+        l.extend(prefectures)
+        prefectures = l
   # save extended data
-  if (not os.path.exists(OUT_DIR + "/" + date.strftime('%Y%m%d'))):
-    os.makedirs(OUT_DIR + "/" + date.strftime('%Y%m%d'))  
+  ymd = date.strftime('%Y%m%d')
+  if (not os.path.exists(OUT_DIR + "/" + ymd)):
+    os.makedirs(OUT_DIR + "/" + ymd)  
   # list of 基礎自治体
-  save_csv(date.strftime('%Y%m%d'), localgovs, FILETYPE.LOCALGOVS)
+  save_csv(ymd, localgovs, FILETYPE.LOCALGOVS)
   # list of 基礎自治体
-  save_csv(date.strftime('%Y%m%d'), types, FILETYPE.TYPES)
+  save_csv(ymd, types, FILETYPE.TYPES)
+  # list of 都道府県一覧
+  save_csv(ymd, prefectures, FILETYPE.PREFECTURES)
