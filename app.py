@@ -17,9 +17,14 @@ import camelot
 
 args = docopt(__doc__) 
 
-def loadPDF(filepath):
+def getFileID(filepath: str):
+  return filepath.rsplit('/',1)[1].replace('.pdf','')
+
+# load PDF file and save table data to csv files
+def loadPDF(filepath: str):
+  return True
   print("load: " + filepath)
-  id = filepath.rsplit('/',1)[1].replace('.pdf','')
+  id = getFileID(filepath)
   tables = camelot.read_pdf(filepath, pages = "1-end")
   print("Total tables extracted:", tables.n)
   for idx, table in enumerate(tables):
@@ -32,8 +37,7 @@ PDF_URL = "https://www.soumu.go.jp/kojinbango_card/"
 # DATA FILE
 DATA_FILE = "./data/loaded_files.json"
 # load data file
-loaded = []
-
+loaded = {}
 if (not args.get('--all') and os.path.exists(DATA_FILE)):
   with open(DATA_FILE) as f:
     loaded = json.load(f)
@@ -47,13 +51,14 @@ result = tree.xpath('//*[@id="contentsWrapper"]/div[2]/div[2]/div[4]/ul/li')
 
 for elem in result:
   link = elem.find('a')
-  if (link.get('href') in loaded):
+  id = getFileID(link.get('href'))
+  if (loaded.get(id)):
     print("skip " + link.text)
   else:
     print("get " + link.text)
     loadPDF(link.get('href'))
-    loaded.append(link.get('href'))
+    loaded[id] = link.text
 
 # save loaded files data
-with open(DATA_FILE, 'w') as f:
-    json.dump(loaded, f, indent=2)
+with open(DATA_FILE, 'w', encoding='utf-8') as f:
+    json.dump(loaded, f, indent=2, ensure_ascii=False)
