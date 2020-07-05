@@ -30,12 +30,12 @@ docker-compose up -d --build
 docker-compose run app pytnon download.py
 ```
 
-If you want to redownload all files
+The script will skip file which is already downloaded. If you want to redownload all files, run:
 ```
 docker-compose run app pytnon download.py --all
 ```
 
-## Create csv files
+## Create csv files from downloaded data
 
 ```
 docker-compose run app pytnon convert_data.py

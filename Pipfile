@@ -12,6 +12,7 @@ camelot-py = "*"
 natsort = "*"
 japanera = "*"
 datetime = "*"
+opencv-python = "*"
 
 [requires]
 python_version = "3.8"
