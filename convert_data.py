@@ -8,6 +8,9 @@ Options:
 import os
 import re
 import json
+import datetime
+from japanera import Japanera, EraDate, Era
+
 from natsort import natsorted
 
 def extract_date(title: str):
@@ -17,12 +20,21 @@ def extract_date(title: str):
       title (str): Title string, like マイナンバーカード交付状況（令和2年6月1日現在)
 
   Returns:
-      date: Date object
+      datetime: Date object
   """
+  janera = Japanera()
   match =  re.search(r'[（(](.*)[)）]', title)
   if (not match):
     return False
-  return match.groups()[0].replace('現在', '').replace('時点', '')
+  datesource = re.search(r'([^0-9元]*)([0-9元]*)年(.*)月(.*)日', match.groups()[0])
+  mydate = janera.strptime('{0}{1}年{2}月{3}日'.format(
+    datesource.groups()[0],
+    datesource.groups()[1].replace('元','1').zfill(2),
+    datesource.groups()[2].zfill(2),
+    datesource.groups()[3].zfill(2)
+  ), "%-E%-o年%m月%d日")
+  return mydate[0]
+
 
 RAW_DIR = './data/raw'
 OUT_DIR = './data/out'
