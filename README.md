@@ -13,7 +13,7 @@ brew install ghostscript
 ## INSTALL
 
 ```
-git clone [this repo]
+git clone git@github.com:codeforjapan/mynumbercard_statistics.git
 docker-compose up -d
 ```
 
