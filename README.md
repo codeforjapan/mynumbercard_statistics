@@ -14,31 +14,23 @@ brew install ghostscript
 
 ```
 git clone git@github.com:codeforjapan/mynumbercard_statistics.git
-docker-compose up -d
-```
-
-## When you want to add new libraries
-
-```
-pipenv install `library`
-docker-compose up -d --build
 ```
 
 ## Download csv data from PDF file
 
 ```
-docker-compose run app pytnon download.py
+make download
 ```
 
 The script will skip file which is already downloaded. If you want to redownload all files, run:
 ```
-docker-compose run app pytnon download.py --all
+make download_all
 ```
 
 ## Create csv files from downloaded data
 
 ```
-docker-compose run app pytnon convert_data.py
+make convert
 ```
 
 This command will create below csv files under `data/out/{YYYYMMDD}/` dir.
@@ -47,3 +39,17 @@ This command will create below csv files under `data/out/{YYYYMMDD}/` dir.
 * `all_prefectures.csv` the statistics of all prefectures (都道府県一覧)
 * `demographics.csv` the demographics data (男女・年齢別)
 * `all_localsgovs.csv`: the statistics of all local governments (基礎自治体)
+
+## Download and convert data
+
+```
+make download_and_convet
+```
+
+## DEVELLOPMENT
+### When you want to add new libraries
+
+```
+pipenv install `library`
+docker-compose up -d --build
+```
