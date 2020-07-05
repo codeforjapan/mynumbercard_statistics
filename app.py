@@ -22,7 +22,6 @@ def getFileID(filepath: str):
 
 # load PDF file and save table data to csv files
 def loadPDF(filepath: str):
-  return True
   print("load: " + filepath)
   id = getFileID(filepath)
   tables = camelot.read_pdf(filepath, pages = "1-end")
@@ -49,6 +48,7 @@ tree = lxml.html.fromstring(html)
 tree.make_links_absolute('https://www.soumu.go.jp/kojinbango_card/')
 result = tree.xpath('//*[@id="contentsWrapper"]/div[2]/div[2]/div[4]/ul/li')
 
+# read PDF links
 for elem in result:
   link = elem.find('a')
   id = getFileID(link.get('href'))
