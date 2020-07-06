@@ -12,7 +12,8 @@ interface DataTemplateProps {
         {
           node: {
             name: string
-            base: string 
+            base: string
+            publicURL: string
           }
         }
       ]
@@ -29,7 +30,9 @@ const DataTemplate: React.FC<DataTemplateProps> = ({ data, pageContext }) => (
         <ul>
           {data.allFile.edges.map(({ node }) => (
             <li>
-              {node.name}
+              <Link to={node.publicURL}>
+                {node.base}
+              </Link>
             </li>
           ))}
         </ul>
@@ -46,6 +49,7 @@ export const query = graphql`
         node {
           name
           base
+          publicURL
         }
       }
     }
