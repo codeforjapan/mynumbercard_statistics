@@ -2,14 +2,14 @@
 
 module.exports = {
   siteMetadata: {
-    title: 'gatsby-starter-typescript-plus',
-    description: 'A starter kit for TypeScript-based Gatsby projects with sensible defaults.',
-    keywords: 'gatsbyjs, gatsby, javascript, sample, something',
-    siteUrl: 'https://gatsby-starter-typescript-plus.netlify.com',
+    title: 'マイナンバーカード普及率ダッシュボード',
+    description: 'マイナンバーカードノ普及率をダッシュボード形式で表示するサイトです。',
+    keywords: 'マイナンバーカード, 普及率, オープンデータ',
+    siteUrl: 'https://mynumbercard.code4japan.org',
     author: {
-      name: 'Resi Respati',
-      url: 'https://twitter.com/resir014',
-      email: 'resir014@gmail.com'
+      name: 'Code for Japan',
+      url: 'https://code4japan.org/',
+      email: 'info0code4japan.org'
     }
   },
   plugins: [
