@@ -1,4 +1,7 @@
 name: Reconvert data
+on:
+  repository_dispatch:
+    types: [test_trigger]
 
 jobs:
   reconvert:
