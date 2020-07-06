@@ -1,0 +1,21 @@
+name: Reconvert data
+
+jobs:
+  reconvert:
+
+    runs-on: ubuntu-18.04
+    timeout-minutes: 300
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: cache data dir
+      uses: actions/cache@preview
+      with:
+        path: data
+        key: ${{ runner.os }}-projectname-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
+        restore-keys:
+          ${{ runner.os }}-projectname-
+    - name: Reconvert Image
+      run: |
+        rm data/out
+        make convert
