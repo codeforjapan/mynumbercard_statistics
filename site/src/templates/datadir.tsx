@@ -18,6 +18,9 @@ interface DataTemplateProps {
         }
       ]
     }
+  },
+  pageContext: {
+    slug: string
   }
 }
 
