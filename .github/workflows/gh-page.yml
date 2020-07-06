@@ -39,7 +39,7 @@ jobs:
           ${{ runner.os }}-yarn-
     - name: Install dependencies  
       run: |
-        sudo apt-get install libvips
+        sudo apt-get install libvips-dev 
         
     - name: Install node dependencies
       run: yarn install --frozen-lockfile
