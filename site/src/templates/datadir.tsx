@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { graphql } from 'gatsby'
+import { graphql, Link } from 'gatsby'
 
 import Page from '../components/Page'
 import Container from '../components/Container'
@@ -20,10 +20,19 @@ interface DataTemplateProps {
   }
 }
 
-const DataTemplate: React.FC<DataTemplateProps> = ({ data }) => (
+const DataTemplate: React.FC<DataTemplateProps> = ({ data, pageContext }) => (
   <IndexLayout>
     <Page>
       <Container>
+        <Link to="/data">戻る</Link>
+        <h1>{pageContext.slug}</h1>
+        <ul>
+          {data.allFile.edges.map(({ node }) => (
+            <li>
+              {node.name}
+            </li>
+          ))}
+        </ul>
       </Container>
     </Page>
   </IndexLayout>
@@ -32,10 +41,11 @@ const DataTemplate: React.FC<DataTemplateProps> = ({ data }) => (
 export default DataTemplate
 export const query = graphql`
   query DataTemplateQuery($slug: String!) {
-    allFile(filter: {relativeDirectory: {eq: $slug}}) {
+    allFile(filter: {fields: {slug: {eq: $slug}}}) {
       edges {
         node {
-          id
+          name
+          base
         }
       }
     }

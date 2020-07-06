@@ -21,6 +21,16 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
       }
       break
     }
+    case 'File': {
+      if (node.relativeDirectory != ''){
+        createNodeField({
+          node,
+          name: 'slug',
+          value: `data/${node.relativeDirectory}`
+        })
+      }
+      break
+    }
     case 'MarkdownRemark': {
       const { permalink, layout } = node.frontmatter
       const { relativePath } = getNode(node.parent)
