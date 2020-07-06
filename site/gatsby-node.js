@@ -83,7 +83,7 @@ exports.createPages = async ({ graphql, actions }) => {
     console.log(slug)
     createPage({
       path: slug,
-      component: path.resolve('./src/templates/page.tsx'),
+      component: path.resolve('./src/templates/datadir.tsx'),
       context: {
         slug
       }
