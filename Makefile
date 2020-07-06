@@ -1,3 +1,6 @@
+#!make
+include .env
+
 download:
 	docker-compose run app python download.py
 download_all:

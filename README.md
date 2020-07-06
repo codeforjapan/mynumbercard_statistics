@@ -54,6 +54,13 @@ This command will create below csv files under `data/out/{YYYYMMDD}/` dir.
 make download_and_convet
 ```
 
+## reconvert CSV files in the github cache
+
+```
+echo GITHUB_TOKEN={YOUR_TOKEN_HERE} > .env # you need github access token for trigger action event
+make trigger-reconvert
+```
+
 # GitHub Actions
 
 GitHub Actions will create new data and publish the data to the `gh-pages` branch.
@@ -82,5 +89,18 @@ docker-compose up -d --build
 
 # Web Site
 
-http://mynumbercard.code4japan.org is built by Gatsby.
+The web site http://mynumbercard.code4japan.org is built by [gatsby.js](https://www.gatsbyjs.org/).
 The project source is under the `site` directory.
+
+## Web site development
+
+## SETUP
+```
+cd site
+yarn install
+```
+
+## Run local dev site 
+```
+gatsby develop
+```
