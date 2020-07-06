@@ -79,3 +79,8 @@ pipenv sync
 pipenv install [new_library]
 docker-compose up -d --build
 ```
+
+# Web Site
+
+http://mynumbercard.code4japan.org is built by Gatsby.
+The project source is under the `site` directory.
