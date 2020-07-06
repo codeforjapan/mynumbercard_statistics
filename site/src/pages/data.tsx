@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { graphql } from "gatsby"
+import { graphql, Link } from "gatsby"
 import Page from '../components/Page'
 import Container from '../components/Container'
 import IndexLayout from '../layouts'
@@ -12,6 +12,9 @@ interface DirProps {
           node: {
             name: string
             relativePath: string
+            fields: {
+              slug: string
+            }
           }
         }
       ]
@@ -27,7 +30,9 @@ const Dirs: React.FC<DirProps> = ({ data }) => (
         <ul>
           {data.allDirectory.edges.map(({ node }) => (
             <li>
-              {node.name}
+              <Link to={ `/${node.fields.slug}` } >
+                {node.name}
+              </Link>
             </li>
           ))}
         </ul>
@@ -44,6 +49,9 @@ export const query = graphql`
         node {
           name
           relativePath
+          fields {
+            slug
+          }
         }
       }
     }

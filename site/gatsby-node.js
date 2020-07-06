@@ -11,6 +11,16 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
   // trip up. An empty string is still required in replacement to `null`.
 
   switch (node.internal.type) {
+    case 'Directory': {
+      if (node.sourceInstanceName == 'data' && node.relativePath != '') {
+        createNodeField({
+          node,
+          name: 'slug',
+          value: `data/${node.name}`
+        })
+      }
+      break
+    }
     case 'MarkdownRemark': {
       const { permalink, layout } = node.frontmatter
       const { relativePath } = getNode(node.parent)
@@ -40,7 +50,46 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
 
 exports.createPages = async ({ graphql, actions }) => {
   const { createPage } = actions
-
+  const dirNodes = await graphql(`
+  {
+    allDirectory(filter: {relativePath: {ne: ""}}) {
+      edges {
+        node {
+          relativePath
+          name
+          root
+          parent {
+            id
+          }
+          dir
+          base
+          internal {
+            type
+          }
+          fields {
+            slug
+          }
+        }
+      }
+    }
+  }
+  `)
+  if (dirNodes.errors) {
+    console.error(allMarkdown.errors)
+    throw new Error(allMarkdown.errors)
+  }
+  dirNodes.data.allDirectory.edges.forEach(({ node }) => {
+    const { slug } = node.fields
+    console.log(slug)
+    createPage({
+      path: slug,
+      component: path.resolve('./src/templates/page.tsx'),
+      context: {
+        slug
+      }
+    })
+  })
+  /*
   const allMarkdown = await graphql(`
     {
       allMarkdownRemark(limit: 1000) {
@@ -82,4 +131,5 @@ exports.createPages = async ({ graphql, actions }) => {
       }
     })
   })
+  */
 }
