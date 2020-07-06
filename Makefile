@@ -1,4 +1,5 @@
 #!make
+-include .env
 
 download:
 	docker-compose run app python download.py
@@ -14,7 +15,6 @@ remove_out_cache:
 reconvert: remove_out_cache convert
 
 trigger-reconvert:
-	include .env
 	curl -X POST -H "Authorization: token ${GITHUB_TOKEN}" \
        -H "Content-Type: application/json" \
        https://api.github.com/repos/codeforjapan/mynumbercard_statistics/dispatches \
