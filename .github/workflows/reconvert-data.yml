@@ -20,5 +20,5 @@ jobs:
           ${{ runner.os }}-projectname-
     - name: Reconvert Image
       run: |
-        rm data/out
+        rm -rf data/out
         make convert
