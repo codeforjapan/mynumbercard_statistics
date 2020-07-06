@@ -13,6 +13,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
+              
     - name: cache data dir
       uses: actions/cache@preview
       with:
@@ -23,8 +24,30 @@ jobs:
     - name: Build Image
       run: |
         make download_and_convert
+
+    - name: Setup Node
+      uses: actions/setup-node@v1
+      with:
+        node-version: '14.x'
+  
+    - name: Cache dependencies
+      uses: actions/cache@v1
+      with:
+        path: ~/site/.cache/yarn
+        key: ${{ runner.os }}-yarn-${{ hashFiles('~/site/**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-yarn-
+  
+    - name: Install dependencies
+      run: yarn install --frozen-lockfile
+      working-directory: site
+  
+    - name: Run build for GitHub Pages
+      run: yarn build
+      working-directory: site
+
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./data/out
+        publish_dir: ./site/public

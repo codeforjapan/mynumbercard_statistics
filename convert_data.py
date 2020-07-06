@@ -65,6 +65,8 @@ def save_csv(ymd: str, data: list, ftype:FILETYPE):
       data (list): data
       ftype (FILETYPE): file types
   """
+  if (len(data) == 0):
+    return
   with open(OUT_DIR + "/" + date.strftime('{0}/{1}.csv'.format(ymd, ftype.value)), 'w') as f:
     writer = csv.writer(f, quoting=csv.QUOTE_NONNUMERIC)
     writer.writerows(data)
