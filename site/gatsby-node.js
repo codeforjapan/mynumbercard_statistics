@@ -90,7 +90,6 @@ exports.createPages = async ({ graphql, actions }) => {
   }
   dirNodes.data.allDirectory.edges.forEach(({ node }) => {
     const { slug } = node.fields
-    console.log(slug)
     createPage({
       path: slug,
       component: path.resolve('./src/templates/datadir.tsx'),
