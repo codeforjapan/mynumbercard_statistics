@@ -15,12 +15,7 @@ from japanera import Japanera, EraDate, Era
 
 from natsort import natsorted
 
-from enum import Enum
-class FILETYPE(Enum):
-      TYPES = 'summary_by_types'
-      DEMOGRAPHIC = 'demographics'
-      PREFECTURES = 'all_prefectures'
-      LOCALGOVS = 'all_localgovs'
+from converter import Processor, FILETYPE
       
 def extract_date(title: str):
   """extract date object from title string
@@ -57,20 +52,16 @@ def to_number(text: str):
       return int(text.replace(',', '').replace('%',''))
   return text
 
-def save_csv(ymd: str, data: list, ftype:FILETYPE):
-  """save csv file
+def delete_total_csvs(outdir: str):
+  """delete csv files in the outdir
 
   Args:
-      ymd (str): the day of data YYYYMMDD
-      data (list): data
-      ftype (FILETYPE): file types
+      outdir (str): the dir that have target csv files
   """
-  if (len(data) == 0):
-    return
-  with open(OUT_DIR + "/" + date.strftime('{0}/{1}.csv'.format(ymd, ftype.value)), 'w') as f:
-    writer = csv.writer(f, quoting=csv.QUOTE_NONNUMERIC)
-    writer.writerows(data)
-  print('* saved {0} lines for {1}.csv'.format(len(data), ftype.value))
+  for filetype in FILETYPE:
+    filename = "{0}/{1}.csv".format(outdir, filetype.value)
+    if (os.path.exists(filename)):
+      os.remove(filename)
 
 RAW_DIR = './data/raw'
 OUT_DIR = './data/out'
@@ -90,12 +81,12 @@ with open(DATA_FILE) as f:
 if (not os.path.exists(OUT_DIR)):
   os.makedirs(OUT_DIR)
 
+# delete total files
+delete_total_csvs(OUT_DIR + "/total")
+
 # load csv data
 for key in loaded.keys():
-  types = []
-  localgovs = []
-  prefectures = []
-  demographic = []
+  processor = Processor() # create processor instance
   date = extract_date(loaded.get(key))
   if (not date):
     print('The system could not retrieve date string from the title "{0}" '.format(loaded.get(key)))
@@ -105,6 +96,7 @@ for key in loaded.keys():
   if (not os.path.exists(target_dir)):
     print('The data for the key {0} does not exists. Skip this key'.format(key))
     continue
+  
   # read all csv file of the raw data
   for csvfile in natsorted(os.listdir(target_dir)):
     l = []
@@ -112,30 +104,19 @@ for key in loaded.keys():
       reader = csv.reader(f)
       for row in reader:
         l.append(list(map(to_number, row)))
-    if (l[0][0] == '都道府県名' and l[0][1] == '市区町村名'):
-      if (localgovs == []):
-        localgovs.extend(l)
-      else:
-        localgovs.extend(l[2:])
-    if (l[0][0] == '区分'):
-      types = l
-    if (l[0][0] == '都道府県名' and l[0][1] != '市区町村名'):
-      if (prefectures == []):
-        prefectures = l[1:]
-      else:
-        l.extend(prefectures)
-        prefectures = l
-    if (l[0][0] == '年齢'):
-      demographic = l
+    processor.appendData(l)
   # save extended data
   ymd = date.strftime('%Y%m%d')
-  if (not os.path.exists(OUT_DIR + "/" + ymd)):
-    os.makedirs(OUT_DIR + "/" + ymd)  
+  processor.saveFiles(OUT_DIR + "/" + ymd)
+
+  # if (not os.path.exists(OUT_DIR + "/" + ymd)):
+  #  os.makedirs(OUT_DIR + "/" + ymd)  
   # list of 団体区分別
-  save_csv(ymd, types, FILETYPE.TYPES)
+  #save_csv(ymd, types, FILETYPE.TYPES)
   # list of 男女・年齢別
-  save_csv(ymd, demographic, FILETYPE.DEMOGRAPHIC)
+  #save_csv(ymd, demographic, FILETYPE.DEMOGRAPHIC)
   # list of 都道府県一覧
-  save_csv(ymd, prefectures, FILETYPE.PREFECTURES)
+  #save_csv(ymd, prefectures, FILETYPE.PREFECTURES)
   # list of 基礎自治体
-  save_csv(ymd, localgovs, FILETYPE.LOCALGOVS)
+  #save_csv(ymd, localgovs, FILETYPE.LOCALGOVS)
+  
