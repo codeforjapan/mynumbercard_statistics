@@ -130,10 +130,14 @@ class DemographicConverter(Converter):
     print('DemographicConverter')
     return self._list
 class PrefecturesConverter(Converter):
-  def _convert(self, list: list) -> list:
-    print('PrefecturesConverter')
-    return self._list
+  def appendData(self, list: list):
+    if (len(self._alllist) == 0):
+      self._alllist.extend(self.convert(list))
+    else:
+      self._alllist = self.convert(list) + self._alllist[1:]
 class LocalgovsConverter(Converter):
-  def _convert(self, list: list) -> list:
-    print('LocalgovsConverter')
-    return self._list
+  def appendData(self, list: list):
+    if (len(self._alllist) == 0):
+      self._alllist.extend(self.convert(list))
+    else:
+      self._alllist.extend(self.convert(list)[2:])
