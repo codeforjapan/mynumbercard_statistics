@@ -71,7 +71,6 @@ class Converter:
 
   def appendData(self, list: list):
     self._alllist.extend(self.convert(list))
-    print(len(self._alllist))
 
 class Processor:
   """Processor class is used for process the csv files
@@ -116,7 +115,6 @@ class Processor:
     if (not os.path.exists(path)):
       os.makedirs(path)
     # save files
-    print(len(self._converters))
     for c in self._converters:
       c.save_csv(path)
 
@@ -128,6 +126,12 @@ class TypesConverter(Converter):
 class DemographicConverter(Converter):
   def _convert(self, list: list) -> list:
     print('DemographicConverter')
+    """
+    CSVのヘッダが
+    ["年齢","人口（H28.1.1時点）","","","交付件数（H29.5.15時点）","","","交付率","","","全体に対する交付件数割合","",""]
+    ["","男","女","計","男","女","計","男","女","計","男","女","計"]
+    という2段組になってしまっているので、ヘッダを一行にして、（＊時点）の部分を抜き出して最終列に加える処理を行う
+    """
     return self._list
 class PrefecturesConverter(Converter):
   def appendData(self, list: list):
