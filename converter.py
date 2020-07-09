@@ -124,17 +124,30 @@ class TypesConverter(Converter):
     print('TypesConverter')
     return self._list
 class DemographicConverter(Converter):
-  def _convert(self, list: list) -> list:
+  def _convert(self, _list: list) -> list:
     print('DemographicConverter')
+    """
+    なぜか データの1行目の人口(女)と人口(計)がくっついて閉まっているので分割する
+    '65,269,421 127,443,563  11,249,560' というふうになっている
+    """
+    fixdata = _list[2][3]
+    
+    if (type(fixdata) is str):
+      _list[2][2] = int(fixdata.split(' ')[0].replace(',',''))
+      _list[2][3] = int(fixdata.split(' ')[1].replace(',',''))
     """
     CSVのヘッダが
     ["年齢","人口（H28.1.1時点）","","","交付件数（H29.5.15時点）","","","交付率","","","全体に対する交付件数割合","",""]
     ["","男","女","計","男","女","計","男","女","計","男","女","計"]
     という2段組になってしまっているので、ヘッダを一行にして、（＊時点）の部分を抜き出して最終列に加える処理を行う
     """
-    population_ymd = StringUtil.extract_date_from_header(self._list[0][1]).strftime('%Y%m%d')
-    card_ymd = StringUtil.extract_date_from_header(self._list[0][4])
-    print(card_ymd)
+    population_ymd = StringUtil.extract_date_from_header(self._list[0][1]).strftime('%Y/%m/%d')
+    card_ymd = StringUtil.extract_date_from_header(self._list[0][4]).strftime('%Y/%m/%d')
+    header = [["年齢","人口(男)","人口(女)","人口(計","交付件数(男)","交付件数(女)","交付件数(計)",
+               "交付率(男)","交付率(女)","交付率(計)",
+               "全体に対する交付件数割合(男)","全体に対する交付件数割合(女)","全体に対する交付件数割合(計)",
+               "人口算出基準日","交付件数基準日"]]
+    self._list = header + list(map(lambda x: x + [population_ymd, card_ymd], _list[2:]))
     return self._list
 class PrefecturesConverter(Converter):
   def appendData(self, list: list):
