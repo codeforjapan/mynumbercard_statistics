@@ -1,7 +1,7 @@
 from enum import Enum
 import os
 import csv
-
+from stringutil import StringUtil
 class FILETYPE(Enum):
       TYPES = 'summary_by_types'
       DEMOGRAPHIC = 'demographics'
@@ -132,6 +132,9 @@ class DemographicConverter(Converter):
     ["","男","女","計","男","女","計","男","女","計","男","女","計"]
     という2段組になってしまっているので、ヘッダを一行にして、（＊時点）の部分を抜き出して最終列に加える処理を行う
     """
+    population_ymd = StringUtil.extract_date_from_header(self._list[0][1]).strftime('%Y%m%d')
+    card_ymd = StringUtil.extract_date_from_header(self._list[0][4])
+    print(card_ymd)
     return self._list
 class PrefecturesConverter(Converter):
   def appendData(self, list: list):
