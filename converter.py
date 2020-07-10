@@ -216,7 +216,7 @@ class PrefecturesConverter(Converter):
     card_date = StringUtil.extract_date_from_header(_list[0][2])
     if (not card_date is None):
       card_ymd = card_date.strftime('%Y/%m/%d')
-    header = ["都道府県名","交付枚数","交付率","人口算出基準日","交付件数基準日"]
+    header = ["都道府県名","総数（人口）","交付枚数","交付率","人口算出基準日","交付件数基準日"]
     data = list(map(lambda x: x + [population_ymd, card_ymd], _list[2:]))
     return [header] + data
   def appendData(self, list: list):
