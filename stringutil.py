@@ -1,14 +1,28 @@
 import re
 from japanera import Japanera, EraDate, Era
+from datetime import datetime
+
 class StringUtil():
   @staticmethod
-  def extract_date_from_header(header: str):
-    # '人口（H28.1.1時点）' といったテキストから日付を取得
+  def extract_date_from_header(header: str) -> datetime:
+    """'人口（H28.1.1時点）' といったテキストから日付を取得
+
+    Args:
+        header (str): '人口（H28.1.1時点）' といったテキスト
+
+    Returns:
+        datetime: 取得した日付
+    """
     janera = Japanera()
-    match =  re.search(r'[（(](.*)[)）]', header)
-    if (not match):
-      return False
-    datesource = re.search(r'([^0-9元]*)([0-9元]*)\.(.*)\.(.*)時点', match.groups()[0])
+    header = header.replace("\n",'')
+    if (len(re.findall(r'[【（(](.*?)[)）】]', header)) == 0):
+      print('Error: {0} has no date text.'.format(header))
+      return None
+    match =  re.findall(r'[【（(](.*?)[)）】]', header)[-1]
+    datesource = re.search(r'([^0-9元]*)([0-9元]*)\.(.*)\.(.*)時点', match)
+    if (not datesource):
+      print('Error: {0} has no date text.'.format(header))
+      return None
     mydate = sorted(janera.strptime('{0}{1}年{2}月{3}日'.format(
       datesource.groups()[0],
       datesource.groups()[1].replace('元','1').zfill(2),
@@ -18,7 +32,7 @@ class StringUtil():
     return mydate[-1]
   
   @staticmethod
-  def extract_date_from_title(title: str):
+  def extract_date_from_title(title: str) -> datetime:
     """extract date object from title string
 
     Args:
