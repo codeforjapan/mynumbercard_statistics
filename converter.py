@@ -13,7 +13,35 @@ class Converter:
     self._list = list
     self._alllist = []
     self._ftype = Converter.detectType(list)
+
+  def add_list_column(self, data: list, adddata: list) -> list:
+    """return new list that is added new list of adddata
+
+    Args:
+        data (list): list data which will have new row
+        adddata (list)): list data which will be added to the data
+
+    Returns:
+        list: new list which have new row
+    """
+    ret = []
+    for idx, row in enumerate(data) :
+      ret = ret + [row + adddata[idx]]
+    return ret
   
+  def add_column(self, header: str, contents):
+    """add new column to the self list
+
+    Args:
+        header (str): a header string
+        contents (str, number or list): a contents that should be added. if this is not the list, the data will be added into all rows
+    """
+    if (type(contents) == list):
+      self._list = self.add_list_column(self._list, [header] + contents)
+    else:
+      self._list[0].append(header)
+      map(lambda x: x.append(contents), self._list[1:])
+
   def reset(self):
     """reset alllist instances
     """
@@ -64,12 +92,33 @@ class Converter:
       return Converter(list)
 
   def convert(self, list: list = None) -> list:
+    """convert data
+
+    Args:
+        list (list, optional): listdata. Defaults to None.
+
+    Returns:
+        list: converted data
+    """
     return self._convert(list) if list else self._convert(self._list)
 
   def _convert(self, list) -> list:
+    """convet list data, mainly used for subclass (overrided from subclasses)
+
+    Args:
+        list ([type]): list of the data
+
+    Returns:
+        list: converted list
+    """
     return list
 
   def appendData(self, list: list):
+    """append new data to all array
+
+    Args:
+        list (list): [description]
+    """
     self._alllist.extend(self.convert(list))
 
 class Processor:
@@ -85,7 +134,7 @@ class Processor:
         list (list): source data
 
     Returns:
-        [type]: [description]
+        Processor: Processor class instance
     """
     converter = Converter.getConverterInstance(list)
     for c in self._converters:

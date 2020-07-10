@@ -1,9 +1,19 @@
 import re
 from japanera import Japanera, EraDate, Era
+from datetime import datetime
+
 class StringUtil():
   @staticmethod
-  def extract_date_from_header(header: str):
-    # '人口（H28.1.1時点）' といったテキストから日付を取得
+  def extract_date_from_header(header: str) -> datetime:
+    """'人口（H28.1.1時点）' といったテキストから日付を取得
+
+    Args:
+        header (str): '人口（H28.1.1時点）' といったテキスト
+
+    Returns:
+        datetime: 取得した日付
+    """
+    # 
     janera = Japanera()
     match =  re.search(r'[（(](.*)[)）]', header)
     if (not match):
@@ -18,7 +28,7 @@ class StringUtil():
     return mydate[-1]
   
   @staticmethod
-  def extract_date_from_title(title: str):
+  def extract_date_from_title(title: str) -> datetime:
     """extract date object from title string
 
     Args:
