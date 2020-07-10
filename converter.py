@@ -205,8 +205,22 @@ class PrefecturesConverter(Converter):
     else:
       self._alllist = self.convert(list) + self._alllist[1:]
 class LocalgovsConverter(Converter):
-  def appendData(self, list: list):
+  def _convert(self, _list):
+    """"
+    ヘッダが
+    都道府県名","市区町村名","総数（人口）
+    【H28.1.1時点】","交付枚数
+    【H29.5.15時点】","交付率"
+    となっているので、日付を抜き出して列に追加する
+    """
+    population_ymd = StringUtil.extract_date_from_header(_list[0][2]).strftime('%Y/%m/%d')
+    card_ymd = StringUtil.extract_date_from_header(_list[0][2]).strftime('%Y/%m/%d')
+    header = ["都道府県名","市区町村名","総数（人口）","交付枚数","交付率","人口算出基準日","交付件数基準日"]
+    data = list(map(lambda x: x + [population_ymd, card_ymd], _list[2:]))
+    return [header] + data
+
+  def appendData(self, _list: list):
     if (len(self._alllist) == 0):
-      self._alllist.extend(self.convert(list))
+      self._alllist.extend(self.convert(_list))
     else:
-      self._alllist.extend(self.convert(list)[2:])
+      self._alllist.extend(self.convert(_list)[2:])

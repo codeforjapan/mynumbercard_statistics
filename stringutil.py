@@ -13,12 +13,9 @@ class StringUtil():
     Returns:
         datetime: 取得した日付
     """
-    # 
     janera = Japanera()
-    match =  re.search(r'[（(](.*)[)）]', header)
-    if (not match):
-      return False
-    datesource = re.search(r'([^0-9元]*)([0-9元]*)\.(.*)\.(.*)時点', match.groups()[0])
+    match =  re.findall(r'[【（(](.*?)[)）】]', header.replace("\n",''))[-1]
+    datesource = re.search(r'([^0-9元]*)([0-9元]*)\.(.*)\.(.*)時点', match)
     mydate = sorted(janera.strptime('{0}{1}年{2}月{3}日'.format(
       datesource.groups()[0],
       datesource.groups()[1].replace('元','1').zfill(2),
