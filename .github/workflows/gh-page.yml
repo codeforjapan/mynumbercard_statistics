@@ -7,51 +7,49 @@ on:
 
 jobs:
   build-and-push:
-
     runs-on: ubuntu-18.04
     timeout-minutes: 300
 
     steps:
-    - uses: actions/checkout@v1
-              
-    - name: cache data dir
-      uses: actions/cache@preview
-      with:
-        path: data
-        key: ${{ runner.os }}-projectname-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
-        restore-keys:
-          ${{ runner.os }}-projectname-
-    - name: Build Image
-      run: |
-        make download_and_convert
+      - uses: actions/checkout@v1
 
-    - name: Setup Node
-      uses: actions/setup-node@v1
-      with:
-        node-version: '10.x'
-  
-    - name: Cache dependencies
-      uses: actions/cache@v1
-      with:
-        path: ~/site/.cache/yarn
-        key: ${{ runner.os }}-yarn-${{ hashFiles('~/site/**/yarn.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-yarn-
-    - name: Install dependencies  
-      run: |
-        sudo apt-get install libvips-dev 
-        
-    - name: Install node dependencies
-      run: yarn install --frozen-lockfile
-      working-directory: site
-  
-    - name: Run build for GitHub Pages
-      run: yarn build
-      working-directory: site
+      - name: cache data dir
+        uses: actions/cache@preview
+        with:
+          path: data
+          key: ${{ runner.os }}-mynumbercard-${{ hashFiles(format('{0}{1}', github.workspace, '/VERSION')) }}
+          restore-keys: ${{ runner.os }}-mynumbercard-
+      - name: Build Image
+        run: |
+          make download_and_convert
 
-    - name: Deploy
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./site/public
-        cname: mynumbercard.code4japan.org
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: "10.x"
+
+      - name: Cache dependencies
+        uses: actions/cache@v1
+        with:
+          path: ~/site/.cache/yarn
+          key: ${{ runner.os }}-yarn-${{ hashFiles('~/site/**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - name: Install dependencies
+        run: |
+          sudo apt-get install libvips-dev
+
+      - name: Install node dependencies
+        run: yarn install --frozen-lockfile
+        working-directory: site
+
+      - name: Run build for GitHub Pages
+        run: yarn build
+        working-directory: site
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./site/public
+          cname: mynumbercard.code4japan.org
