@@ -89,7 +89,7 @@ class Converter:
     elif (Converter.detectType(list) == FILETYPE.LOCALGOVS):
       return LocalgovsConverter(list)
     else:
-      return Converter(list)
+      return None
 
   def convert(self, list: list = None) -> list:
     """convert data
@@ -137,6 +137,7 @@ class Processor:
         Processor: Processor class instance
     """
     converter = Converter.getConverterInstance(list)
+
     for c in self._converters:
       if (isinstance(c, type(converter))):
         return c
@@ -150,10 +151,12 @@ class Processor:
     """
     converter = self.findConverterInstance(list)
     if (not converter):
-      print('getConverter')
       converter = Converter.getConverterInstance(list)
-      self._converters.append(converter)
-    converter.appendData(list)
+      if (not converter is None):
+        self._converters.append(converter)
+
+    if (not converter is None):
+      converter.appendData(list)
 
   def saveFiles(self, path: str):
     """save local instance as csv file
@@ -169,9 +172,26 @@ class Processor:
 
 # converter child class
 class TypesConverter(Converter):
-  def _convert(self, list: list) -> list:
-    print('TypesConverter')
+  def _convert(self, _list: list) -> list:
+    """
+    "区分","","人口
+    （H29.1.1時点）","交付枚数
+    （H29.8.31時点）","人口に対する交付枚数率"
+    というヘッダになっているので基準日を抜き出して列として追加する
+    """
+    population_ymd = None
+    card_ymd = None
+    population_date = StringUtil.extract_date_from_header(_list[0][2])
+    if (not population_date is None):
+      population_ymd = population_date.strftime('%Y/%m/%d')
+    card_date = StringUtil.extract_date_from_header(_list[0][3])
+    if (not card_date is None):
+      card_ymd = card_date.strftime('%Y/%m/%d')
+    header = ["区分","", "人口","交付枚数","人口に対する交付枚数率","人口算出基準日","交付件数基準日"]
+    data = list(map(lambda x: x + [population_ymd, card_ymd], _list[2:]))
+    self._list =  [header] + data
     return self._list
+
 class DemographicConverter(Converter):
   def _convert(self, _list: list) -> list:
     print('DemographicConverter')
@@ -196,7 +216,7 @@ class DemographicConverter(Converter):
                "交付率(男)","交付率(女)","交付率(計)",
                "全体に対する交付件数割合(男)","全体に対する交付件数割合(女)","全体に対する交付件数割合(計)",
                "人口算出基準日","交付件数基準日"]]
-    self._list = header + list(map(lambda x: x + [population_ymd, card_ymd], _list[2:]))
+    self._list = [header] + list(map(lambda x: x + [population_ymd, card_ymd], _list[2:]))
     return self._list
 class PrefecturesConverter(Converter):
   def _convert(self, _list):
@@ -218,7 +238,8 @@ class PrefecturesConverter(Converter):
       card_ymd = card_date.strftime('%Y/%m/%d')
     header = ["都道府県名","総数（人口）","交付枚数","交付率","人口算出基準日","交付件数基準日"]
     data = list(map(lambda x: x + [population_ymd, card_ymd], _list[2:]))
-    return [header] + data
+    self._list =  [header] + data
+    return self._list
   def appendData(self, list: list):
     if (len(self._alllist) == 0):
       self._alllist.extend(self.convert(list))
@@ -243,7 +264,8 @@ class LocalgovsConverter(Converter):
       card_ymd = card_date.strftime('%Y/%m/%d')
     header = ["都道府県名","市区町村名","総数（人口）","交付枚数","交付率","人口算出基準日","交付件数基準日"]
     data = list(map(lambda x: x + [population_ymd, card_ymd], _list[2:]))
-    return [header] + data
+    self._list = [header] + data
+    return self._list
 
   def appendData(self, _list: list):
     if (len(self._alllist) == 0):
