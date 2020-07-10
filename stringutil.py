@@ -14,8 +14,15 @@ class StringUtil():
         datetime: 取得した日付
     """
     janera = Japanera()
-    match =  re.findall(r'[【（(](.*?)[)）】]', header.replace("\n",''))[-1]
+    header = header.replace("\n",'')
+    if (len(re.findall(r'[【（(](.*?)[)）】]', header)) == 0):
+      print('Error: {0} has no date text.'.format(header))
+      return None
+    match =  re.findall(r'[【（(](.*?)[)）】]', header)[-1]
     datesource = re.search(r'([^0-9元]*)([0-9元]*)\.(.*)\.(.*)時点', match)
+    if (not datesource):
+      print('Error: {0} has no date text.'.format(header))
+      return None
     mydate = sorted(janera.strptime('{0}{1}年{2}月{3}日'.format(
       datesource.groups()[0],
       datesource.groups()[1].replace('元','1').zfill(2),

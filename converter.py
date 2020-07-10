@@ -199,6 +199,26 @@ class DemographicConverter(Converter):
     self._list = header + list(map(lambda x: x + [population_ymd, card_ymd], _list[2:]))
     return self._list
 class PrefecturesConverter(Converter):
+  def _convert(self, _list):
+    """"
+    ヘッダが
+    "都道府県名","総数（人口）
+    【H28.1.1時点】","交付枚数
+    【H29.5.15時点】","人口に対する
+    交付枚数率"
+    となっているので、日付を抜き出して列に追加する
+    """
+    population_ymd = None
+    card_ymd = None
+    population_date = StringUtil.extract_date_from_header(_list[0][1])
+    if (not population_date is None):
+      population_ymd = population_date.strftime('%Y/%m/%d')
+    card_date = StringUtil.extract_date_from_header(_list[0][2])
+    if (not card_date is None):
+      card_ymd = card_date.strftime('%Y/%m/%d')
+    header = ["都道府県名","交付枚数","交付率","人口算出基準日","交付件数基準日"]
+    data = list(map(lambda x: x + [population_ymd, card_ymd], _list[2:]))
+    return [header] + data
   def appendData(self, list: list):
     if (len(self._alllist) == 0):
       self._alllist.extend(self.convert(list))
@@ -213,8 +233,14 @@ class LocalgovsConverter(Converter):
     【H29.5.15時点】","交付率"
     となっているので、日付を抜き出して列に追加する
     """
-    population_ymd = StringUtil.extract_date_from_header(_list[0][2]).strftime('%Y/%m/%d')
-    card_ymd = StringUtil.extract_date_from_header(_list[0][2]).strftime('%Y/%m/%d')
+    population_ymd = None
+    card_ymd = None
+    population_date = StringUtil.extract_date_from_header(_list[0][2])
+    if (not population_date is None):
+      population_ymd = population_date.strftime('%Y/%m/%d')
+    card_date = StringUtil.extract_date_from_header(_list[0][3])
+    if (not card_date is None):
+      card_ymd = card_date.strftime('%Y/%m/%d')
     header = ["都道府県名","市区町村名","総数（人口）","交付枚数","交付率","人口算出基準日","交付件数基準日"]
     data = list(map(lambda x: x + [population_ymd, card_ymd], _list[2:]))
     return [header] + data
