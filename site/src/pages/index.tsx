@@ -1,10 +1,12 @@
 import * as React from 'react'
 import { Link } from 'gatsby'
+import loadable from '@loadable/component'
 
 import Page from '../components/Page'
 import Container from '../components/Container'
 import IndexLayout from '../layouts'
-import PrefectureReport from '../components/PrefectureReport'
+const PrefectureReport = loadable(() => import('../components/PrefectureReport'))
+
 const IndexPage = () => (
   <IndexLayout>
     <Page>
