@@ -22,7 +22,7 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
       break
     }
     case 'File': {
-      if (node.relativeDirectory != ''){
+      if (node.relativeDirectory != '') {
         createNodeField({
           node,
           name: 'slug',
@@ -61,28 +61,28 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
 exports.createPages = async ({ graphql, actions }) => {
   const { createPage } = actions
   const dirNodes = await graphql(`
-  {
-    allDirectory(filter: {relativePath: {ne: ""}}) {
-      edges {
-        node {
-          relativePath
-          name
-          root
-          parent {
-            id
-          }
-          dir
-          base
-          internal {
-            type
-          }
-          fields {
-            slug
+    {
+      allDirectory(filter: { relativePath: { ne: "" } }) {
+        edges {
+          node {
+            relativePath
+            name
+            root
+            parent {
+              id
+            }
+            dir
+            base
+            internal {
+              type
+            }
+            fields {
+              slug
+            }
           }
         }
       }
     }
-  }
   `)
   if (dirNodes.errors) {
     console.error(allMarkdown.errors)
