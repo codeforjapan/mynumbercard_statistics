@@ -26,7 +26,12 @@
   "dependencies": {
     "@emotion/core": "^10.0.10",
     "@emotion/styled": "^10.0.12",
+    "@fortawesome/fontawesome-svg-core": "^1.2.29",
+    "@fortawesome/free-brands-svg-icons": "^5.13.1",
+    "@fortawesome/free-solid-svg-icons": "^5.13.1",
+    "@fortawesome/react-fontawesome": "^0.1.11",
     "@loadable/component": "^5.13.1",
+    "@types/loadable__component": "^5.13.0",
     "babel-plugin-styled-components": "^1.10.1",
     "classnames": "^2.2.6",
     "gatsby": "^2.10.0",
