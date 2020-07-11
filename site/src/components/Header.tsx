@@ -35,8 +35,9 @@ const HomepageLink = styled(Link)`
 `
 const GithubLink = styled(Container)`
   color: ${colors.white};
-  font-size: 1rem;
+  font-size: 1.5rem;
   font-weight: 600;
+  margin-right: 20px;
 
   &:hover,
   &:focus {
