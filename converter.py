@@ -13,9 +13,20 @@ class FILETYPE(Enum):
     LOCALGOVS = 'all_localgovs'
 
 
+def normalizechar(c: str) -> str:
+    # if this text is inside of Kangxi Radicals block, it should be normalized.
+    # see https://en.wikipedia.org/wiki/Kangxi_radical#:~:text=They%20are%20officially%20part%20of,the%20%22CJK%20Radicals%20Supplement%22.
+    if (c >= b'\xe2\xbc\x80'.decode('utf-8') and
+            c <= b'\xe2\xbf\x95'.decode('utf-8')):  # '⼀'から'⿕' の範囲
+        return unicodedata.normalize('NFKC', c)
+    else:
+        return c
+
+
 def normalize(s) -> str:
     if (type(s) is str):
-        return unicodedata.normalize('NFKC', s)
+        return ''.join(list(map(normalizechar, list(s))))
+
     else:
         return s
 
@@ -75,7 +86,7 @@ class Converter:
             '* saved {0} lines for {1}.csv'.format(len(self._alllist),
                                                    self._ftype.value))
 
-    @staticmethod
+    @ staticmethod
     def detectType(lst: list) -> FILETYPE:
         if (lst[0][0] == '都道府県名' and lst[0][1] == '市区町村名'):
             return FILETYPE.LOCALGOVS
@@ -86,7 +97,7 @@ class Converter:
         if (lst[0][0] == '年齢'):
             return FILETYPE.DEMOGRAPHIC
 
-    @staticmethod
+    @ staticmethod
     def getConverterInstance(list: list):
         """get Converter instance from the list data
 
