@@ -2,6 +2,7 @@ from enum import Enum
 import os
 import csv
 from stringutil import StringUtil
+from datetime import date
 
 
 class FILETYPE(Enum):
@@ -98,7 +99,7 @@ class Converter:
         else:
             return None
 
-    def convert(self, list: list = None) -> list:
+    def convert(self, _list: list, created_at: date) -> list:
         """convert data
 
         Args:
@@ -107,7 +108,12 @@ class Converter:
         Returns:
             list: converted data
         """
-        return self._convert(list) if list else self._convert(self._list)
+        new_list = self._convert(_list) if _list else self._convert(self._list)
+        header = ['公開日'] + new_list[0]
+        ret = [header] + list(map(lambda x:
+                                  [created_at.strftime('%Y/%m/%d')] + x,
+                                  new_list[1:]))
+        return ret
 
     def _convert(self, list) -> list:
         """convet list data, mainly used for subclass (overrided from subclasses)
@@ -118,23 +124,25 @@ class Converter:
         Returns:
             list: converted list
         """
+        self._list = list
         return list
 
-    def appendData(self, list: list):
+    def appendData(self, list: list, created_at: date):
         """append new data to all array
 
         Args:
             list (list): [description]
         """
-        self._alllist.extend(self.convert(list))
+        self._alllist.extend(self.convert(list, created_at))
 
 
 class Processor:
     """Processor class is used for process the csv files
     """
 
-    def __init__(self):
+    def __init__(self, process_date: date):
         self._converters = []
+        self._date = process_date
 
     def findConverterInstance(self, list: list):
         """find Converter instance in the local list
@@ -165,7 +173,7 @@ class Processor:
                 self._converters.append(converter)
 
         if (converter is not None):
-            converter.appendData(list)
+            converter.appendData(list, self._date)
 
     def saveFiles(self, path: str):
         """save local instance as csv file
@@ -206,7 +214,6 @@ class TypesConverter(Converter):
 
 class DemographicConverter(Converter):
     def _convert(self, _list: list) -> list:
-        print('DemographicConverter')
         """
     なぜか データの1行目の人口(女)と人口(計)がくっついて閉まっているので分割する
     '65,269,421 127,443,563  11,249,560' というふうになっている
@@ -226,11 +233,11 @@ class DemographicConverter(Converter):
             self._list[0][1]).strftime('%Y/%m/%d')
         card_ymd = StringUtil.extract_date_from_header(
             self._list[0][4]).strftime('%Y/%m/%d')
-        header = [["年齢", "人口(男)", "人口(女)", "人口(計", "交付件数(男)",
-                   "交付件数(女)", "交付件数(計)",
-                   "交付率(男)", "交付率(女)", "交付率(計)",
-                   "全体に対する交付件数割合(男)", "全体に対する交付件数割合(女)", "全体に対する交付件数割合(計)",
-                   "人口算出基準日", "交付件数基準日"]]
+        header = ["年齢", "人口(男)", "人口(女)", "人口(計", "交付件数(男)",
+                  "交付件数(女)", "交付件数(計)",
+                  "交付率(男)", "交付率(女)", "交付率(計)",
+                  "全体に対する交付件数割合(男)", "全体に対する交付件数割合(女)", "全体に対する交付件数割合(計)",
+                  "人口算出基準日", "交付件数基準日"]
         self._list = [
             header] + list(map(lambda x: x +
                                [population_ymd, card_ymd], _list[2:]))
@@ -260,11 +267,11 @@ class PrefecturesConverter(Converter):
         self._list = [header] + data
         return self._list
 
-    def appendData(self, list: list):
+    def appendData(self, list: list, created_at: date):
         if (len(self._alllist) == 0):
-            self._alllist.extend(self.convert(list))
+            self._alllist.extend(self.convert(list, created_at))
         else:
-            self._alllist = self.convert(list) + self._alllist[1:]
+            self._alllist = self.convert(list, created_at) + self._alllist[1:]
 
 
 class LocalgovsConverter(Converter):
@@ -290,8 +297,8 @@ class LocalgovsConverter(Converter):
         self._list = [header] + data
         return self._list
 
-    def appendData(self, _list: list):
+    def appendData(self, _list: list, created_at: date):
         if (len(self._alllist) == 0):
-            self._alllist.extend(self.convert(_list))
+            self._alllist.extend(self.convert(_list, created_at))
         else:
-            self._alllist.extend(self.convert(_list)[2:])
+            self._alllist.extend(self.convert(_list, created_at)[2:])

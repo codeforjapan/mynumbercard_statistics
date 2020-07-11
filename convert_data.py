@@ -52,13 +52,14 @@ delete_total_csvs(OUT_DIR + "/total")
 
 # load csv data
 for key in loaded.keys():
-    processor = Processor()  # create processor instance
     date = StringUtil.extract_date_from_title(loaded.get(key))
+    ymd = date.strftime('%Y%m%d')
     if (not date):
         print('The system could not retrieve date string from the title "{0}" '
               .format(
                   loaded.get(key)))
         continue
+    processor = Processor(date)  # create processor instance
     print('Create file for the date {0}'.format(date))
     target_dir = RAW_DIR + '/' + key
     if (not os.path.exists(target_dir)):
@@ -76,5 +77,4 @@ for key in loaded.keys():
                 l.append(list(map(StringUtil.to_number, row)))
         processor.appendData(l)
     # save extended data
-    ymd = date.strftime('%Y%m%d')
     processor.saveFiles(OUT_DIR + "/" + ymd)
