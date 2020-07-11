@@ -11,7 +11,7 @@ const IndexPage = () => (
   <IndexLayout>
     <Page>
       <Container>
-        <h1>マイナンバー普及率</h1>
+        <h1>マイナンバーカード普及状況ダッシュボード</h1>
         <p>
           マイナンバーカードの交付率のダッシュボードです。{' '}
           <a href="https://www.soumu.go.jp/kojinbango_card/" target="_blank">
