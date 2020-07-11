@@ -1,6 +1,7 @@
 from enum import Enum
 import os
 import csv
+import unicodedata
 from stringutil import StringUtil
 from datetime import date
 
@@ -10,6 +11,13 @@ class FILETYPE(Enum):
     DEMOGRAPHIC = 'demographics'
     PREFECTURES = 'all_prefectures'
     LOCALGOVS = 'all_localgovs'
+
+
+def normalize(s) -> str:
+    if (type(s) is str):
+        return unicodedata.normalize('NFKC', s)
+    else:
+        return s
 
 
 class Converter:
@@ -109,6 +117,10 @@ class Converter:
             list: converted data
         """
         new_list = self._convert(_list) if _list else self._convert(self._list)
+        # normalize glyph data
+        new_list = list(map(lambda x:
+                            list(map(lambda y: normalize(y),
+                                     x)), new_list))
         header = ['公開日'] + new_list[0]
         ret = [header] + list(map(lambda x:
                                   [created_at.strftime('%Y/%m/%d')] + x,
