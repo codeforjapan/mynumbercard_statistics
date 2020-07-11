@@ -6,6 +6,9 @@ import { Link } from 'gatsby'
 import { heights, dimensions, colors } from '../styles/variables'
 import Container from './Container'
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faGithub } from '@fortawesome/free-brands-svg-icons'
+
 const StyledHeader = styled.header`
   height: ${heights.header}px;
   padding: 0 ${dimensions.containerPadding}rem;
@@ -24,6 +27,16 @@ const HomepageLink = styled(Link)`
   color: ${colors.white};
   font-size: 1.5rem;
   font-weight: 600;
+  margin-right: auto;
+  &:hover,
+  &:focus {
+    text-decoration: none;
+  }
+`
+const GithubLink = styled(Container)`
+  color: ${colors.white};
+  font-size: 1rem;
+  font-weight: 600;
 
   &:hover,
   &:focus {
@@ -39,6 +52,11 @@ const Header: React.FC<HeaderProps> = ({ title }) => (
   <StyledHeader>
     <HeaderInner>
       <HomepageLink to="/">{title}</HomepageLink>
+      <GithubLink>
+        <a href="https://github.com/codeforjapan/mynumbercard_statistics">
+          <FontAwesomeIcon icon={faGithub} style={{ color: colors.white }} />
+        </a>
+      </GithubLink>
     </HeaderInner>
   </StyledHeader>
 )

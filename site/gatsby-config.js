@@ -2,8 +2,8 @@
 
 module.exports = {
   siteMetadata: {
-    title: 'マイナンバーカード普及率ダッシュボード',
-    description: 'マイナンバーカードノ普及率をダッシュボード形式で表示するサイトです。',
+    title: 'マイナンバーカード普及状況ダッシュボード',
+    description: 'マイナンバーカードノ普及状況をダッシュボード形式で表示するサイトです。',
     keywords: 'マイナンバーカード, 普及率, オープンデータ',
     siteUrl: 'https://mynumbercard.code4japan.org',
     author: {
@@ -12,8 +12,7 @@ module.exports = {
       email: 'info0code4japan.org'
     }
   },
-  plugins: [
-    {
+  plugins: [{
       resolve: 'gatsby-source-filesystem',
       options: {
         name: 'data',
@@ -31,8 +30,7 @@ module.exports = {
     {
       resolve: 'gatsby-transformer-remark',
       options: {
-        plugins: [
-          {
+        plugins: [{
             resolve: 'gatsby-remark-responsive-iframe',
             options: {
               wrapperStyle: 'margin-bottom: 1rem'

@@ -2,8 +2,14 @@
 
 const path = require('path')
 
-exports.onCreateNode = ({ node, actions, getNode }) => {
-  const { createNodeField } = actions
+exports.onCreateNode = ({
+  node,
+  actions,
+  getNode
+}) => {
+  const {
+    createNodeField
+  } = actions
 
   // Sometimes, optional fields tend to get not picked up by the GraphQL
   // interpreter if not a single content uses it. Therefore, we're putting them
@@ -32,8 +38,13 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
       break
     }
     case 'MarkdownRemark': {
-      const { permalink, layout } = node.frontmatter
-      const { relativePath } = getNode(node.parent)
+      const {
+        permalink,
+        layout
+      } = node.frontmatter
+      const {
+        relativePath
+      } = getNode(node.parent)
 
       let slug = permalink
 
@@ -58,8 +69,13 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
   }
 }
 
-exports.createPages = async ({ graphql, actions }) => {
-  const { createPage } = actions
+exports.createPages = async ({
+  graphql,
+  actions
+}) => {
+  const {
+    createPage
+  } = actions
   const dirNodes = await graphql(`
     {
       allDirectory(filter: { relativePath: { ne: "" } }) {
@@ -88,16 +104,20 @@ exports.createPages = async ({ graphql, actions }) => {
     console.error(allMarkdown.errors)
     throw new Error(allMarkdown.errors)
   }
-  dirNodes.data.allDirectory.edges.forEach(({ node }) => {
-    const { slug } = node.fields
+  dirNodes.data.allDirectory.edges.forEach(({
+    node
+  }) => {
+    const {
+      slug
+    } = node.fields
     createPage({
       path: slug,
       component: path.resolve('./src/templates/datadir.tsx'),
       context: {
         slug
       }
-    })
-  })
+    });
+  });
   /*
   const allMarkdown = await graphql(`
     {
@@ -141,4 +161,4 @@ exports.createPages = async ({ graphql, actions }) => {
     })
   })
   */
-}
+};
