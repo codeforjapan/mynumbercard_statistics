@@ -41,6 +41,7 @@
     "gatsby-remark-responsive-iframe": "^2.2.0",
     "gatsby-remark-smartypants": "^2.1.0",
     "gatsby-source-filesystem": "^2.1.0",
+    "gatsby-transformer-csv": "^2.3.10",
     "gatsby-transformer-json": "^2.2.0",
     "gatsby-transformer-remark": "^2.5.0",
     "gatsby-transformer-sharp": "^2.2.0",
@@ -52,6 +53,7 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-helmet": "^5.2.1",
+    "tableau-react": "^1.2.2",
     "typescript": "^3.5.2"
   },
   "devDependencies": {
