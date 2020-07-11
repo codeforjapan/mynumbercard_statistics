@@ -207,7 +207,7 @@ class TypesConverter(Converter):
         if (card_date is not None):
             card_ymd = card_date.strftime('%Y/%m/%d')
         header = ["区分", "", "人口", "交付枚数", "人口に対する交付枚数率", "人口算出基準日", "交付件数基準日"]
-        data = list(map(lambda x: x + [population_ymd, card_ymd], _list[2:]))
+        data = list(map(lambda x: x + [population_ymd, card_ymd], _list[1:]))
         self._list = [header] + data
         return self._list
 
@@ -263,7 +263,7 @@ class PrefecturesConverter(Converter):
         if (card_date is not None):
             card_ymd = card_date.strftime('%Y/%m/%d')
         header = ["都道府県名", "総数（人口）", "交付枚数", "交付率", "人口算出基準日", "交付件数基準日"]
-        data = list(map(lambda x: x + [population_ymd, card_ymd], _list[2:]))
+        data = list(map(lambda x: x + [population_ymd, card_ymd], _list[1:]))
         self._list = [header] + data
         return self._list
 
@@ -293,12 +293,18 @@ class LocalgovsConverter(Converter):
             card_ymd = card_date.strftime('%Y/%m/%d')
         header = ["都道府県名", "市区町村名", "総数（人口）",
                   "交付枚数", "交付率", "人口算出基準日", "交付件数基準日"]
-        data = list(map(lambda x: x + [population_ymd, card_ymd], _list[2:]))
+        if (_list[1][0] == '全国'):  # remove 全国
+            data = list(
+                map(lambda x: x + [population_ymd, card_ymd], _list[2:]))
+        else:
+            data = list(
+                map(lambda x: x + [population_ymd, card_ymd], _list[1:]))
         self._list = [header] + data
         return self._list
 
     def appendData(self, _list: list, created_at: date):
         if (len(self._alllist) == 0):
-            self._alllist.extend(self.convert(_list, created_at))
+            self._alllist.extend(self.convert(
+                _list, created_at))
         else:
-            self._alllist.extend(self.convert(_list, created_at)[2:])
+            self._alllist.extend(self.convert(_list, created_at)[1:])
