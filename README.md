@@ -3,7 +3,7 @@
 ## Japanese
 
 マイナンバーカードの交付率のダッシュボードです。
-`https://www.soumu.go.jp/kojinbango_card/` にあるPDF、「マイナンバーカード交付状況について」からCSVデータを抜き出し、CSVとして保存しています。
+`https://www.soumu.go.jp/kojinbango_card/` にある PDF、「マイナンバーカード交付状況について」から CSV データを抜き出し、CSV として保存しています。
 
 ## English
 
@@ -24,6 +24,7 @@ git clone git@github.com:codeforjapan/mynumbercard_statistics.git
 ```
 
 # usage
+
 ## Download csv data from PDF file
 
 ```
@@ -31,6 +32,7 @@ make download
 ```
 
 The script will skip file which is already downloaded. If you want to redownload all files, run:
+
 ```
 make download_all
 ```
@@ -43,10 +45,10 @@ make convert
 
 This command will create below csv files under `data/out/{YYYYMMDD}/` dir.
 
-* `summary_by_types.csv` summary data by govenment types (団体区分別)
-* `all_prefectures.csv` the statistics of all prefectures (都道府県一覧)
-* `demographics.csv` the demographics data (男女・年齢別)
-* `all_localsgovs.csv`: the statistics of all local governments (基礎自治体)
+- `summary_by_types.csv` summary data by govenment types (団体区分別)
+- `all_prefectures.csv` the statistics of all prefectures (都道府県一覧)
+- `demographics.csv` the demographics data (男女・年齢別)
+- `all_localsgovs.csv`: the statistics of all local governments (基礎自治体)
 
 ## Download and convert data
 
@@ -70,12 +72,14 @@ GitHub Actions will create new data and publish the data to the `gh-pages` branc
 ## Use Python
 
 Please install Python 3 and below dependencies
+
 ```
 brew install ghostscript
 pip install pipenv
 ```
 
 Then sync the libraries.
+
 ```
 pipenv sync
 ```
@@ -94,13 +98,26 @@ The project source is under the `site` directory.
 
 ## Web site development
 
+### DEPENDENCIES
+
+- node version 12 # version 13 or later failed installing sharp in OSX 10.15.5..
+
 ## SETUP
+
 ```
 cd site
+nodebrew use v12.18.2
 yarn install
 ```
 
-## Run local dev site 
+## Run local dev site
+
 ```
 gatsby develop
+```
+
+## build static files
+
+```
+yarn build
 ```
