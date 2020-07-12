@@ -1,6 +1,8 @@
-'use strict'
-
-module.exports = {
+"use strict";
+/* globals module: false */
+/*jshint node: true */
+/*jshint esversion: 6 */
+module.exports = { // jshint ignore:line
   siteMetadata: {
     title: 'マイナンバーカード普及状況ダッシュボード',
     description: 'マイナンバーカードノ普及状況をダッシュボード形式で表示するサイトです。',
