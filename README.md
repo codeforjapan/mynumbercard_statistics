@@ -94,13 +94,13 @@ docker-compose up -d --build
 # Web Site
 
 The web site http://mynumbercard.code4japan.org is built by [gatsby.js](https://www.gatsbyjs.org/).
-The project source is under the `site` directory.
+The project source is located under the `site` directory.
 
 ## Web site development
 
 ### DEPENDENCIES
 
-- node version 12 # version 13 or later failed installing sharp in OSX 10.15.5..
+- node version 12.18.2 (version 13 or later failed installing sharp in OSX 10.15.5.)
 
 ## SETUP
 
