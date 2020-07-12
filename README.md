@@ -11,7 +11,7 @@ This is a dashboard of the the my number card statistics.
 
 Extract and convert csv data from the PDF file under マイナンバーカード交付状況について on the `https://www.soumu.go.jp/kojinbango_card/`
 
-## DEPENDENCIES
+## REQUIREMENT
 
 ### Use Docker
 
@@ -98,15 +98,23 @@ The project source is located under the `site` directory.
 
 ## Web site development
 
-### DEPENDENCIES
+### REQUIREMENT
 
 - node version 12.18.2 (version 13 or later failed installing sharp in OSX 10.15.5.)
 
 ## SETUP
 
+### install node 12..18.2
+
+```
+brew install nodenv # if you don't have any node version controller
+nodenv install 12.18.2
+```
+
+## install dependencies
+
 ```
 cd site
-nodebrew use v12.18.2
 yarn install
 ```
 

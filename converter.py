@@ -15,7 +15,7 @@ class FILETYPE(Enum):
 
 def normalizechar(c: str) -> str:
     # if this text is inside of Kangxi Radicals block, it should be normalized.
-    # see https://en.wikipedia.org/wiki/Kangxi_radical#:~:text=They%20are%20officially%20part%20of,the%20%22CJK%20Radicals%20Supplement%22.
+    # see https://en.wikipedia.org/wiki/Kangxi_radical#:~:text=They%20are%20officially%20part%20of,the%20%22CJK%20Radicals%20Supplement%22.  # noqa: E501
     if (c >= b'\xe2\xbc\x80'.decode('utf-8') and
             c <= b'\xe2\xbf\x95'.decode('utf-8')):  # '⼀'から'⿕' の範囲
         return unicodedata.normalize('NFKC', c)
