@@ -1,6 +1,8 @@
-'use strict'
+"use strict";
+/*jshint node: true */
+/*jshint esversion: 8 */
 
-const path = require('path')
+const path = require('path') // jshint ignore:line
 
 exports.onCreateNode = ({
   node,
@@ -9,7 +11,7 @@ exports.onCreateNode = ({
 }) => {
   const {
     createNodeField
-  } = actions
+  } = actions;
 
   // Sometimes, optional fields tend to get not picked up by the GraphQL
   // interpreter if not a single content uses it. Therefore, we're putting them
@@ -23,9 +25,9 @@ exports.onCreateNode = ({
           node,
           name: 'slug',
           value: `data/${node.name}`
-        })
+        });
       }
-      break
+      break;
     }
     case 'File': {
       if (node.relativeDirectory != '') {
@@ -33,23 +35,23 @@ exports.onCreateNode = ({
           node,
           name: 'slug',
           value: `data/${node.relativeDirectory}`
-        })
+        });
       }
-      break
+      break;
     }
     case 'MarkdownRemark': {
       const {
         permalink,
         layout
-      } = node.frontmatter
+      } = node.frontmatter;
       const {
         relativePath
-      } = getNode(node.parent)
+      } = getNode(node.parent);
 
-      let slug = permalink
+      let slug = permalink;
 
       if (!slug) {
-        slug = `/${relativePath.replace('.md', '')}/`
+        slug = `/${relativePath.replace('.md', '')}/`;
       }
 
       // Used to generate URL to view this content.
@@ -57,17 +59,17 @@ exports.onCreateNode = ({
         node,
         name: 'slug',
         value: slug || ''
-      })
+      });
 
       // Used to determine a page layout.
       createNodeField({
         node,
         name: 'layout',
         value: layout || ''
-      })
+      });
     }
   }
-}
+};
 
 exports.createPages = async ({
   graphql,
@@ -75,7 +77,7 @@ exports.createPages = async ({
 }) => {
   const {
     createPage
-  } = actions
+  } = actions;
   const dirNodes = await graphql(`
     {
       allDirectory(filter: { relativePath: { ne: "" } }) {
@@ -99,17 +101,17 @@ exports.createPages = async ({
         }
       }
     }
-  `)
+  `);
   if (dirNodes.errors) {
-    console.error(allMarkdown.errors)
-    throw new Error(allMarkdown.errors)
+    console.error(dirNodes.errors);
+    throw new Error(dirNodes.errors);
   }
   dirNodes.data.allDirectory.edges.forEach(({
     node
   }) => {
     const {
       slug
-    } = node.fields
+    } = node.fields;
     createPage({
       path: slug,
       component: path.resolve('./src/templates/datadir.tsx'),
