@@ -244,8 +244,10 @@ class DemographicConverter(Converter):
         fixdata = _list[2][3]
 
         if (type(fixdata) is str):
-            _list[2][2] = int(fixdata.split(' ')[0].replace(',', ''))
-            _list[2][3] = int(fixdata.split(' ')[1].replace(',', ''))
+            _list[2][2] = int(fixdata.split()[0].replace(',', ''))
+            _list[2][3] = int(fixdata.split()[1].replace(',', ''))
+            if (len(fixdata.split(' ')) > 2):
+                _list[2][4] = int(fixdata.split()[2].replace(',', ''))
         """
     CSVのヘッダが
     ["年齢","人口（H28.1.1時点）","","","交付件数（H29.5.15時点）","","","交付率","","","全体に対する交付件数割合","",""]
@@ -256,7 +258,7 @@ class DemographicConverter(Converter):
             self._list[0][1]).strftime('%Y/%m/%d')
         card_ymd = StringUtil.extract_date_from_header(
             self._list[0][4]).strftime('%Y/%m/%d')
-        header = ["年齢", "人口(男)", "人口(女)", "人口(計", "交付件数(男)",
+        header = ["年齢", "人口(男)", "人口(女)", "人口(計)", "交付件数(男)",
                   "交付件数(女)", "交付件数(計)",
                   "交付率(男)", "交付率(女)", "交付率(計)",
                   "全体に対する交付件数割合(男)", "全体に対する交付件数割合(女)", "全体に対する交付件数割合(計)",
