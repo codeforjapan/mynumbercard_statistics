@@ -13,12 +13,14 @@ interface DataTemplateProps {
           node: {
             name: string
             base: string
-            publicURL: string
+            fields: {
+              href: string
+            }
           }
         }
       ]
     }
-  },
+  }
   pageContext: {
     slug: string
   }
@@ -33,9 +35,7 @@ const DataTemplate: React.FC<DataTemplateProps> = ({ data, pageContext }) => (
         <ul>
           {data.allFile.edges.map(({ node }) => (
             <li>
-              <Link to={node.publicURL}>
-                {node.base}
-              </Link>
+              <a href={node.fields.href}>{node.base}</a>
             </li>
           ))}
         </ul>
@@ -47,12 +47,14 @@ const DataTemplate: React.FC<DataTemplateProps> = ({ data, pageContext }) => (
 export default DataTemplate
 export const query = graphql`
   query DataTemplateQuery($slug: String!) {
-    allFile(filter: {fields: {slug: {eq: $slug}}}) {
+    allFile(filter: { fields: { slug: { eq: $slug } } }) {
       edges {
         node {
           name
           base
-          publicURL
+          fields {
+            href
+          }
         }
       }
     }
