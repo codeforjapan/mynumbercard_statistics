@@ -1,8 +1,12 @@
 "use strict";
 /*jshint node: true */
 /*jshint esversion: 8 */
+const fs = require('fs');
 
 const path = require('path') // jshint ignore:line
+const {
+  createFilePath
+} = require(`gatsby-source-filesystem`)
 
 exports.onCreateNode = ({
   node,
@@ -30,11 +34,38 @@ exports.onCreateNode = ({
       break;
     }
     case 'File': {
-      if (node.relativeDirectory != '') {
+      if (node.relativeDirectory != '' &&
+        node.internal.mediaType == 'text/csv') {
+        // copy csv files to static folder
+        const slug = createFilePath({
+          node,
+          getNode,
+          basePath: `data/`
+        });
         createNodeField({
           node,
           name: 'slug',
           value: `data/${node.relativeDirectory}`
+        });
+        // make data dir is it does not exitst
+        const outdir = './public/static/data';
+        try {
+          fs.mkdirSync(outdir);
+        } catch (err) {
+
+        }
+        try {
+          fs.mkdirSync(`${outdir}/${node.relativeDirectory}`);
+        } catch (err) {
+
+        }
+        const outfile = `${outdir}/${node.relativeDirectory}/${node.base}`;
+        fs.copyFileSync(node.absolutePath, outfile);
+        // set new path to href field
+        createNodeField({
+          node,
+          name: 'href',
+          value: `/static/data/${node.relativeDirectory}/${node.base}`
         });
       }
       break;
@@ -120,6 +151,36 @@ exports.createPages = async ({
       }
     });
   });
+  /*
+  // create file node
+  const fileNodes = await graphql(`
+    {
+      allFile(filter: {relativeDirectory: {ne: ""}, base: {regex: "/.csv$/"}}) {
+        edges {
+          node {
+            relativePath
+            relativeDirectory
+            name
+            base
+          }
+        }
+      }
+    }
+  `);
+  if (fileNodes.errors) {
+    console.error(fileNodes.errors);
+    throw new Error(fileNodes.errors);
+  }
+  fileNodes.data.allFile.edges.forEach(({
+    node
+  }) => {
+    const relativeDirectory = node.relativeDirectory;
+    createPage({
+      path: relativeDirectory,
+      component: path.resolve('./src/templates/datadir.tsx'),
+    });
+  });
+  */
   /*
   const allMarkdown = await graphql(`
     {
