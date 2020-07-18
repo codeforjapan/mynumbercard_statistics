@@ -1,12 +1,12 @@
 "use strict";
 /*jshint node: true */
 /*jshint esversion: 8 */
-const fs = require('fs');
+const fs = require('fs'); // jshint ignore:line
 
 const path = require('path') // jshint ignore:line
 const {
   createFilePath
-} = require(`gatsby-source-filesystem`)
+} = require(`gatsby-source-filesystem`);
 
 exports.onCreateNode = ({
   node,
