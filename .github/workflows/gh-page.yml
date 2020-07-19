@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - master
+  schedule:
+    # * はYAMLに置ける特殊文字なので、この文字列は引用符で囲まなければならない
+    - cron: "0 23 * * *"
 
 jobs:
   build-and-push:
