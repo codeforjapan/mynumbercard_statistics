@@ -2,12 +2,13 @@
 /* globals module: false */
 /*jshint node: true */
 /*jshint esversion: 6 */
+const siteUrl = 'https://mynumbercard.code4japan.org';
 module.exports = { // jshint ignore:line
   siteMetadata: {
     title: 'マイナンバーカード普及状況ダッシュボード',
     description: 'マイナンバーカードノ普及状況をダッシュボード形式で表示するサイトです。',
     keywords: 'マイナンバーカード, 普及率, オープンデータ',
-    siteUrl: 'https://mynumbercard.code4japan.org',
+    siteUrl: siteUrl,
     author: {
       name: 'Code for Japan',
       url: 'https://code4japan.org/',
@@ -30,6 +31,9 @@ module.exports = { // jshint ignore:line
       }
     },
     {
+      /**
+       * convert markdown to html 
+       */
       resolve: 'gatsby-transformer-remark',
       options: {
         plugins: [{
@@ -51,12 +55,49 @@ module.exports = { // jshint ignore:line
           }
         ]
       }
-    },
-    'gatsby-transformer-json',
-    {
-      resolve: 'gatsby-plugin-canonical-urls',
+    }, {
+      /**
+       * plugin for providing /feed-1.json.
+       */
+      resolve: `gatsby-plugin-json-output`,
       options: {
-        siteUrl: 'https://gatsby-starter-typescript-plus.netlify.com'
+        siteUrl: siteUrl, // defined on top of plugins
+        // get all files grouped by file name
+        graphQLQuery: `
+          {
+            allFile(filter: {base: {regex: "/.csv$/"}}) {
+              group(field: name) {
+                fieldValue
+                edges {
+                  node {
+                    base
+                    fields {
+                      dir
+                      href
+                    }
+                  }
+                }
+              }
+            }
+          }
+        `,
+        // this method will create feed-1.json
+        serializeFeed: results => {
+          {
+            return results.data.allFile.group.map(group => {
+              return {
+                name: group.fieldValue,
+                files: group.edges.map(edge => {
+                  return {
+                    dir: edge.node.fields.dir,
+                    href: edge.node.fields.href
+                  };
+                })
+              };
+            });
+          }
+        },
+        nodesPerFeedFile: 300,
       }
     },
     'gatsby-plugin-emotion',
