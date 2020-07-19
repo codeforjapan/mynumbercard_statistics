@@ -66,7 +66,7 @@ module.exports = { // jshint ignore:line
         graphQLQuery: `
           {
             allFile(filter: {base: {regex: "/.csv$/"}}) {
-              group(field: name) {
+              group(field: base) {
                 fieldValue
                 edges {
                   node {
