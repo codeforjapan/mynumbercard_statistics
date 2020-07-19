@@ -1,9 +1,10 @@
-"use strict";
+'use strict'
 /* globals module: false */
 /*jshint node: true */
 /*jshint esversion: 6 */
-const siteUrl = 'https://mynumbercard.code4japan.org';
-module.exports = { // jshint ignore:line
+const siteUrl = 'https://mynumbercard.code4japan.org'
+module.exports = {
+  // jshint ignore:line
   siteMetadata: {
     title: 'マイナンバーカード普及状況ダッシュボード',
     description: 'マイナンバーカードノ普及状況をダッシュボード形式で表示するサイトです。',
@@ -15,7 +16,8 @@ module.exports = { // jshint ignore:line
       email: 'info0code4japan.org'
     }
   },
-  plugins: [{
+  plugins: [
+    {
       resolve: 'gatsby-source-filesystem',
       options: {
         name: 'data',
@@ -27,16 +29,17 @@ module.exports = { // jshint ignore:line
       resolve: 'gatsby-source-filesystem',
       options: {
         name: 'content',
-        path: `${__dirname}/src/content`,
+        path: `${__dirname}/src/content`
       }
     },
     {
       /**
-       * convert markdown to html 
+       * convert markdown to html
        */
       resolve: 'gatsby-transformer-remark',
       options: {
-        plugins: [{
+        plugins: [
+          {
             resolve: 'gatsby-remark-responsive-iframe',
             options: {
               wrapperStyle: 'margin-bottom: 1rem'
@@ -55,7 +58,8 @@ module.exports = { // jshint ignore:line
           }
         ]
       }
-    }, {
+    },
+    {
       /**
        * plugin for providing /feed-1.json.
        */
@@ -91,13 +95,24 @@ module.exports = { // jshint ignore:line
                   return {
                     dir: edge.node.fields.dir,
                     href: edge.node.fields.href
-                  };
+                  }
                 })
-              };
-            });
+              }
+            })
           }
         },
-        nodesPerFeedFile: 300,
+        nodesPerFeedFile: 300
+      }
+    },
+    {
+      resolve: `gatsby-plugin-google-analytics`,
+      options: {
+        // The property ID; the tracking code won't be generated without it
+        trackingId: 'UA-45275834-10',
+        // Defines where to place the tracking script - `true` in the head and `false` in the body
+        head: false,
+        // Setting this parameter is also optional
+        respectDNT: true
       }
     },
     'gatsby-plugin-emotion',
@@ -106,4 +121,4 @@ module.exports = { // jshint ignore:line
     'gatsby-transformer-sharp',
     'gatsby-plugin-react-helmet'
   ]
-};
+}
