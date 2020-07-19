@@ -25,14 +25,24 @@ git clone git@github.com:codeforjapan/mynumbercard_statistics.git
 
 ## USAGE
 
+### Download and convert data
+
+This command will run below command, `download` and `convert` one time.
+[notice] This command will take a long time when you run this command first time.
+
+```bash
+make download_and_convert
+```
+
 ### Download csv data from PDF file
+
+[notice] This command will take a long time when you run this command first time.
 
 ```bash
 make download
 ```
 
-The script will skip file which is already downloaded. If you want to redownload all files, run:
-[notice] This command will take a long time when you run this command first time
+The `download` script will skip files which is already downloaded. If you want to redownload all files, run `download_all`.
 
 ```bash
 make download_all
@@ -51,22 +61,9 @@ This command will create below csv files under `data/out/{YYYYMMDD}/` dir.
 - `demographics.csv` the demographics data (男女・年齢別)
 - `all_localsgovs.csv`: the statistics of all local governments (基礎自治体)
 
-### Download and convert data
-
-```bash
-make download_and_convet
-```
-
-### reconvert CSV files in the github cache
-
-```bash
-echo GITHUB_TOKEN={YOUR_TOKEN_HERE} > .env # you need github access token for trigger action event
-make trigger-reconvert
-```
-
 ## GitHub Actions
 
-GitHub Actions will create new data and publish the data to the `gh-pages` branch.
+GitHub Actions in this repository will create new data and publish the data to the `gh-pages` branch.
 
 ## DEVELOPMENT
 
