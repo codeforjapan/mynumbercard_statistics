@@ -47,6 +47,11 @@ exports.onCreateNode = ({
           name: 'slug',
           value: `data/${node.relativeDirectory}`
         });
+        createNodeField({
+          node,
+          name: 'dir',
+          value: `${node.relativeDirectory}`
+        });
         // make data dir is it does not exitst
         const outdir = './public/static/data';
         try {
