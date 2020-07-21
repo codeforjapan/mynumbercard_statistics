@@ -24,9 +24,12 @@ def normalizechar(c: str) -> str:
 
 
 def normalize(s) -> str:
+    # see this: https://en.wikipedia.org/wiki/CJK_Radicals_Supplement
     if (type(s) is str):
-        return ''.join(list(map(normalizechar, list(s))))
-
+        ret = ''.join(list(map(normalizechar, list(s))))
+        # blow strings also should be fixed. https://ja.wiktionary.org/wiki/%E3%82%AB%E3%83%86%E3%82%B4%E3%83%AA:Unicode_CJK_Radicals_Supplement   # noqa: E501
+        table = str.maketrans("⺟⺠⻁⻄⻑⻘⻝⻤⻨⻩⻫⻭⻯⻲戶黑", "母民虎西長青食鬼麦黄斉歯竜亀戸黒")
+        return ret.translate(table)
     else:
         return s
 
@@ -132,6 +135,7 @@ class Converter:
         new_list = list(map(lambda x:
                             list(map(lambda y: normalize(y),
                                      x)), new_list))
+
         header = ['公開日'] + new_list[0]
         ret = [header] + list(map(lambda x:
                                   [created_at.strftime('%Y/%m/%d')] + x,
