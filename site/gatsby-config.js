@@ -9,6 +9,8 @@ module.exports = { // jshint ignore:line
     description: 'マイナンバーカードノ普及状況をダッシュボード形式で表示するサイトです。',
     keywords: 'マイナンバーカード, 普及率, オープンデータ',
     siteUrl: siteUrl,
+    type: 'website',
+    siteName: 'マイナンバーカード普及状況ダッシュボード',
     author: {
       name: 'Code for Japan',
       url: 'https://code4japan.org/',
@@ -28,6 +30,13 @@ module.exports = { // jshint ignore:line
       options: {
         name: 'content',
         path: `${__dirname}/src/content`
+      }
+    },
+    {
+      resolve: 'gatsby-source-filesystem',
+      options: {
+        name: 'images',
+        path: `${__dirname}/src/images`,
       }
     },
     {
