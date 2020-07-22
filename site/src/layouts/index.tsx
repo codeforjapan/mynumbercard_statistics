@@ -34,7 +34,6 @@ const IndexLayout: React.FC = ({ children }) => (
     query={graphql`
       query IndexLayoutQuery {
         site {
-          host
           siteMetadata {
             title
             description
