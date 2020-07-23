@@ -242,22 +242,11 @@ class TypesConverter(Converter):
 class DemographicConverter(Converter):
     def _convert(self, _list: list) -> list:
         """
-    なぜか データの1行目の人口(女)と人口(計)がくっついて閉まっているので分割する
-    '65,269,421 127,443,563  11,249,560' というふうになっている
-    """
-        fixdata = _list[2][3]
-
-        if (type(fixdata) is str):
-            _list[2][2] = int(fixdata.split()[0].replace(',', ''))
-            _list[2][3] = int(fixdata.split()[1].replace(',', ''))
-            if (len(fixdata.split(' ')) > 2):
-                _list[2][4] = int(fixdata.split()[2].replace(',', ''))
+        CSVのヘッダが
+        ["年齢","人口（H28.1.1時点）","","","交付件数（H29.5.15時点）","","","交付率","","","全体に対する交付件数割合","",""]
+        ["","男","女","計","男","女","計","男","女","計","男","女","計"]
+        という2段組になってしまっているので、ヘッダを一行にして、（＊時点）の部分を抜き出して最終列に加える処理を行う
         """
-    CSVのヘッダが
-    ["年齢","人口（H28.1.1時点）","","","交付件数（H29.5.15時点）","","","交付率","","","全体に対する交付件数割合","",""]
-    ["","男","女","計","男","女","計","男","女","計","男","女","計"]
-    という2段組になってしまっているので、ヘッダを一行にして、（＊時点）の部分を抜き出して最終列に加える処理を行う
-    """
         population_ymd = StringUtil.extract_date_from_header(
             self._list[0][1]).strftime('%Y/%m/%d')
         card_ymd = StringUtil.extract_date_from_header(
