@@ -19,7 +19,7 @@ interface StaticQueryProps {
       type: string
       siteName: string
     }
-  },
+  }
   file: {
     childImageSharp: {
       resize: {
@@ -34,7 +34,6 @@ const IndexLayout: React.FC = ({ children }) => (
     query={graphql`
       query IndexLayoutQuery {
         site {
-          host
           siteMetadata {
             title
             description
@@ -43,7 +42,7 @@ const IndexLayout: React.FC = ({ children }) => (
             siteName
           }
         }
-        file(relativePath: {eq: "logo.png"}) {
+        file(relativePath: { eq: "logo.png" }) {
           childImageSharp {
             resize(width: 200) {
               src
