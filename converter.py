@@ -136,7 +136,7 @@ class Converter:
                             list(map(lambda y: normalize(y),
                                      x)), new_list))
 
-        header = ['公開日'] + new_list[0]
+        header = ['算出基準日'] + new_list[0]
         ret = [header] + list(map(lambda x:
                                   [created_at.strftime('%Y/%m/%d')] + x,
                                   new_list[1:]))
@@ -233,7 +233,8 @@ class TypesConverter(Converter):
         card_date = StringUtil.extract_date_from_header(_list[0][3])
         if (card_date is not None):
             card_ymd = card_date.strftime('%Y/%m/%d')
-        header = ["区分", "", "人口", "交付枚数", "人口に対する交付枚数率", "人口算出基準日", "交付件数基準日"]
+        header = ["区分", "", "人口", "交付枚数",
+                  "人口に対する交付枚数率", "人口算出基準日", "交付枚数算出基準日"]
         data = list(map(lambda x: x + [population_ymd, card_ymd], _list[1:]))
         self._list = [header] + data
         return self._list
@@ -255,7 +256,7 @@ class DemographicConverter(Converter):
                   "交付件数(女)", "交付件数(計)",
                   "交付率(男)", "交付率(女)", "交付率(計)",
                   "全体に対する交付件数割合(男)", "全体に対する交付件数割合(女)", "全体に対する交付件数割合(計)",
-                  "人口算出基準日", "交付件数基準日"]
+                  "人口算出基準日", "交付枚数算出基準日"]
         self._list = [
             header] + list(map(lambda x: x +
                                [population_ymd, card_ymd], _list[2:]))
@@ -280,7 +281,8 @@ class PrefecturesConverter(Converter):
         card_date = StringUtil.extract_date_from_header(_list[0][2])
         if (card_date is not None):
             card_ymd = card_date.strftime('%Y/%m/%d')
-        header = ["都道府県名", "総数（人口）", "交付枚数", "交付率", "人口算出基準日", "交付件数基準日"]
+        header = ["都道府県名", "総数（人口）", "交付枚数",
+                  "人口に対する交付枚数率", "人口算出基準日", "交付枚数算出基準日"]
         data = list(map(lambda x: x + [population_ymd, card_ymd], _list[1:]))
         self._list = [header] + data
         return self._list
@@ -310,7 +312,7 @@ class LocalgovsConverter(Converter):
         if (card_date is not None):
             card_ymd = card_date.strftime('%Y/%m/%d')
         header = ["都道府県名", "市区町村名", "総数（人口）",
-                  "交付枚数", "交付率", "人口算出基準日", "交付件数基準日"]
+                  "交付枚数", "人口に対する交付枚数率", "人口算出基準日", "交付件数基準日"]
         if (_list[1][0] == '全国'):  # remove 全国
             data = list(
                 map(lambda x: x + [population_ymd, card_ymd], _list[2:]))
