@@ -20,7 +20,7 @@ jobs:
         with:
           path: data
           key: ${{ runner.os }}-mynumbercard-dev-${{ hashFiles(format('{0}{1}', github.workspace, '/VERSION')) }}
-          restore-keys: ${{ runner.os }}-mynumbercard-dev-
+
       - name: Build Image
         run: |
           make download_and_convert
