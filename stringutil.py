@@ -147,3 +147,28 @@ class StringUtil():
         if (end_row < len(line)):
             ret = ret + line[end_row]
         return ret
+
+    @staticmethod
+    def complement_error_lines(lists: list, row_index: int,
+                               skip_first_line: bool) -> list:
+        ret = []
+        if (skip_first_line):
+            ret.append(lists.pop(0))
+        fill_data = ""
+        isEmpty = False
+        for lst in lists:
+            if (lst[row_index] is not None and lst[row_index] != ""):
+                fill_data = lst[row_index]
+                if (isEmpty):
+                    break
+            else:
+                isEmpty = True
+                if (fill_data != ''):
+                    break
+        if ((not isEmpty) or fill_data == ""):
+            return ret + lists
+        for lst in lists:
+            if (lst[row_index] is None or lst[row_index] == ""):
+                lst[row_index] = fill_data
+            ret.append(lst)
+        return ret
