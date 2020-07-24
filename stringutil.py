@@ -131,12 +131,10 @@ class StringUtil():
                 for key, value in str_list.items():
                     # 前後にスペースを含む列があったらそれを追加する
                     if (key - len(value) + 1 <= idx and idx < key):
-                        print('pop')
                         row = StringUtil.to_number(value.pop(0))
                         str_list[key] = value
                         break
                     if (key < idx and idx <= key + len(value)):
-                        print('pop-1')
                         row = StringUtil.to_number(value.pop(1))
                         str_list[key] = value
                         break
@@ -148,4 +146,29 @@ class StringUtil():
         # チェックしない列を追加
         if (end_row < len(line)):
             ret = ret + line[end_row]
+        return ret
+
+    @staticmethod
+    def complement_error_lines(lists: list, row_index: int,
+                               skip_first_line: bool) -> list:
+        ret = []
+        if (skip_first_line):
+            ret.append(lists.pop(0))
+        fill_data = ""
+        isEmpty = False
+        for lst in lists:
+            if (lst[row_index] is not None and lst[row_index] != ""):
+                fill_data = lst[row_index]
+                if (isEmpty):
+                    break
+            else:
+                isEmpty = True
+                if (fill_data != ''):
+                    break
+        if ((not isEmpty) or fill_data == ""):
+            return ret + lists
+        for lst in lists:
+            if (lst[row_index] is None or lst[row_index] == ""):
+                lst[row_index] = fill_data
+            ret.append(lst)
         return ret

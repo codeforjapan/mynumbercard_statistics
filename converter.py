@@ -298,6 +298,8 @@ class PrefecturesConverter(Converter):
             self._alllist.extend(self.convert(list, created_at))
         else:
             self._alllist = self.convert(list, created_at) + self._alllist[1:]
+        self._alllist = StringUtil.complement_error_lines(
+            self._alllist, 6, True)
 
 
 class LocalgovsConverter(Converter):
