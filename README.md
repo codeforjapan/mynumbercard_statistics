@@ -2,12 +2,12 @@
 
 ## Japanese
 
-マイナンバーカードの交付率のダッシュボードです。
+マイナンバーカード交付率のダッシュボード( https://mynumbercard.code4japan.org/ ) のソースコードです。
 `https://www.soumu.go.jp/kojinbango_card/` にある PDF、「マイナンバーカード交付状況について」から CSV データを抜き出し、CSV として保存しています。
 
 ## English
 
-This is a dashboard of the my number card statistics.
+This is a repository of a dashboard of the my number card statistics ( https://mynumbercard.code4japan.org/ ).
 
 Extract and convert csv data from the PDF file under マイナンバーカード交付状況について on the `https://www.soumu.go.jp/kojinbango_card/`
 
