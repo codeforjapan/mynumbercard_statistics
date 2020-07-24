@@ -44,7 +44,8 @@ const GithubLink = styled(Container)`
     text-decoration: none;
   }
 `
-
+const MenuNav = styled.nav``
+const MenuLi = styled.li``
 interface HeaderProps {
   title: string
 }
@@ -53,11 +54,17 @@ const Header: React.FC<HeaderProps> = ({ title }) => (
   <StyledHeader>
     <HeaderInner>
       <HomepageLink to="/">{title}</HomepageLink>
-      <GithubLink>
-        <a href="https://github.com/codeforjapan/mynumbercard_statistics">
-          <FontAwesomeIcon icon={faGithub} style={{ color: colors.white }} />
-        </a>
-      </GithubLink>
+      <MenuNav>
+        <MenuLi>
+          <Link to="/data">データ一覧</Link>
+          <Link to="/about">このサイトについて</Link>
+          <GithubLink>
+            <a href="https://github.com/codeforjapan/mynumbercard_statistics">
+              <FontAwesomeIcon icon={faGithub} style={{ color: colors.white }} />
+            </a>
+          </GithubLink>
+        </MenuLi>
+      </MenuNav>
     </HeaderInner>
   </StyledHeader>
 )
