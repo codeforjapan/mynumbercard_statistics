@@ -8,6 +8,7 @@ import Container from './Container'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGithub } from '@fortawesome/free-brands-svg-icons'
+import { faBars } from '@fortawesome/free-solid-svg-icons'
 
 const StyledHeader = styled.header`
   height: ${heights.header}px;
@@ -32,12 +33,14 @@ const HomepageLink = styled(Link)`
   &:focus {
     text-decoration: none;
   }
+  @media screen and (max-width: 600px) {
+    margin-right: 40px;
+  }
 `
 const GithubLink = styled(Container)`
   color: ${colors.white};
   font-size: 1.5rem;
   font-weight: 600;
-  margin-right: 20px;
 
   &:hover,
   &:focus {
@@ -46,11 +49,23 @@ const GithubLink = styled(Container)`
 `
 const MenuNav = styled.nav`
   height: 100%;
+  @media screen and (max-width: 600px) {
+    a {
+      display: none;
+    }
+    a.icon {
+      float: right;
+      display: block;
+    }
+  }
 `
 const MenuLi = styled.li`
   float: left;
   display: block;
   height: '100%';
+  .icon {
+    display: none;
+  }
   a {
     display: block;
     color: #f2f2f2;
@@ -63,6 +78,21 @@ const MenuLi = styled.li`
   a: hover {
     background-color: #ddd;
     color: black;
+  }
+  @media screen and (max-width: 600px) {
+     {
+      position: relative;
+    }
+    a.icon {
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
+    a {
+      float: none;
+      display: none;
+      text-align: left;
+    }
   }
 `
 const ActiveStyles = {
@@ -95,6 +125,11 @@ const Header: React.FC<HeaderProps> = ({ title }) => (
               <FontAwesomeIcon icon={faGithub} style={{ color: colors.white }} />
             </a>
           </GithubLink>
+        </MenuLi>
+        <MenuLi>
+          <a href="javascript:void(0);" className="icon" onClick={() => console.log('click')}>
+            <FontAwesomeIcon icon={faBars} style={{ color: colors.white }} />
+          </a>
         </MenuLi>
       </MenuNav>
     </HeaderInner>
