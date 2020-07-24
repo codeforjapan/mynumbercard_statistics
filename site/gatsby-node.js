@@ -21,7 +21,6 @@ exports.onCreateNode = ({
   // interpreter if not a single content uses it. Therefore, we're putting them
   // through `createNodeField` so that the fields still exist and GraphQL won't
   // trip up. An empty string is still required in replacement to `null`.
-
   switch (node.internal.type) {
     case 'Directory': {
       if (node.sourceInstanceName == 'data' && node.relativePath != '') {
@@ -156,37 +155,6 @@ exports.createPages = async ({
       }
     });
   });
-  /*
-  // create file node
-  const fileNodes = await graphql(`
-    {
-      allFile(filter: {relativeDirectory: {ne: ""}, base: {regex: "/.csv$/"}}) {
-        edges {
-          node {
-            relativePath
-            relativeDirectory
-            name
-            base
-          }
-        }
-      }
-    }
-  `);
-  if (fileNodes.errors) {
-    console.error(fileNodes.errors);
-    throw new Error(fileNodes.errors);
-  }
-  fileNodes.data.allFile.edges.forEach(({
-    node
-  }) => {
-    const relativeDirectory = node.relativeDirectory;
-    createPage({
-      path: relativeDirectory,
-      component: path.resolve('./src/templates/datadir.tsx'),
-    });
-  });
-  */
-  /*
   const allMarkdown = await graphql(`
     {
       allMarkdownRemark(limit: 1000) {
@@ -201,14 +169,18 @@ exports.createPages = async ({
       }
     }
   `)
-
   if (allMarkdown.errors) {
     console.error(allMarkdown.errors)
     throw new Error(allMarkdown.errors)
   }
 
-  allMarkdown.data.allMarkdownRemark.edges.forEach(({ node }) => {
-    const { slug, layout } = node.fields
+  allMarkdown.data.allMarkdownRemark.edges.forEach(({
+    node
+  }) => {
+    const {
+      slug,
+      layout
+    } = node.fields;
 
     createPage({
       path: slug,
@@ -226,7 +198,6 @@ exports.createPages = async ({
         // Data passed to context is available in page queries as GraphQL variables.
         slug
       }
-    })
-  })
-  */
+    });
+  });
 };

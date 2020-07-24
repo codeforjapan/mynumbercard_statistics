@@ -42,9 +42,9 @@ const IndexLayout: React.FC = ({ children }) => (
             siteName
           }
         }
-        file(relativePath: { eq: "logo.png" }) {
+        file(relativePath: { eq: "ogp.png" }) {
           childImageSharp {
-            resize(width: 200) {
+            resize(width: 1200) {
               src
             }
           }
@@ -64,8 +64,8 @@ const IndexLayout: React.FC = ({ children }) => (
             { property: 'og:type', content: data.site.siteMetadata.type },
             { property: 'og:site_name', content: data.site.siteMetadata.siteName },
             { property: 'og:image', content: data.site.siteMetadata.siteUrl + data.file.childImageSharp.resize.src },
-            { property: 'og:image:width', content: '200' },
-            { property: 'og:image:height', content: '200' }
+            { property: 'og:image:width', content: '1200' },
+            { property: 'og:image:height', content: '896' }
           ]}
         >
           <link rel="icon" href="/images/favicon.ico" />
