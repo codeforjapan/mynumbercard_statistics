@@ -7,16 +7,6 @@ import IndexLayout from '../layouts'
 
 interface PageTemplateProps {
   data: {
-    site: {
-      siteMetadata: {
-        title: string
-        description: string
-        author: {
-          name: string
-          url: string
-        }
-      }
-    }
     markdownRemark: {
       html: string
       excerpt: string
@@ -40,19 +30,8 @@ const PageTemplate: React.FC<PageTemplateProps> = ({ data }) => (
 )
 
 export default PageTemplate
-/* Remove this because there is no Markdown contents yet
 export const query = graphql`
   query PageTemplateQuery($slug: String!) {
-    site {
-      siteMetadata {
-        title
-        description
-        author {
-          name
-          url
-        }
-      }
-    }
     markdownRemark(fields: { slug: { eq: $slug } }) {
       html
       excerpt
@@ -62,4 +41,3 @@ export const query = graphql`
     }
   }
 `
-*/
