@@ -131,12 +131,10 @@ class StringUtil():
                 for key, value in str_list.items():
                     # 前後にスペースを含む列があったらそれを追加する
                     if (key - len(value) + 1 <= idx and idx < key):
-                        print('pop')
                         row = StringUtil.to_number(value.pop(0))
                         str_list[key] = value
                         break
                     if (key < idx and idx <= key + len(value)):
-                        print('pop-1')
                         row = StringUtil.to_number(value.pop(1))
                         str_list[key] = value
                         break
