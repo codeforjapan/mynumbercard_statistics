@@ -67,7 +67,9 @@ const IndexLayout: React.FC = ({ children }) => (
             { property: 'og:image:width', content: '1200' },
             { property: 'og:image:height', content: '896' }
           ]}
-        />
+        >
+          <link rel="icon" href="/images/favicon.ico" />
+        </Helmet>
         <Header title={data.site.siteMetadata.title} />
         <LayoutMain>{children}</LayoutMain>
       </LayoutRoot>
