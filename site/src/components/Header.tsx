@@ -44,8 +44,32 @@ const GithubLink = styled(Container)`
     text-decoration: none;
   }
 `
-const MenuNav = styled.nav``
-const MenuLi = styled.li``
+const MenuNav = styled.nav`
+  height: 100%;
+`
+const MenuLi = styled.li`
+  float: left;
+  display: block;
+  height: '100%';
+  a {
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 8px 10px;
+    text-decoration: none;
+    font-size: 17px;
+    margin-top: 8px;
+  }
+  a: hover {
+    background-color: #ddd;
+    color: black;
+  }
+`
+const ActiveStyles = {
+  background: 'white',
+  color: 'rebeccapurple',
+  fontweight: 'bold'
+}
 interface HeaderProps {
   title: string
 }
@@ -56,8 +80,16 @@ const Header: React.FC<HeaderProps> = ({ title }) => (
       <HomepageLink to="/">{title}</HomepageLink>
       <MenuNav>
         <MenuLi>
-          <Link to="/data">データ一覧</Link>
-          <Link to="/about">このサイトについて</Link>
+          <Link to="/data" activeStyle={ActiveStyles}>
+            データ一覧
+          </Link>
+        </MenuLi>
+        <MenuLi>
+          <Link to="/about" activeStyle={ActiveStyles}>
+            このサイトについて
+          </Link>
+        </MenuLi>
+        <MenuLi>
           <GithubLink>
             <a href="https://github.com/codeforjapan/mynumbercard_statistics">
               <FontAwesomeIcon icon={faGithub} style={{ color: colors.white }} />
