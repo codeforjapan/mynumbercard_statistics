@@ -29,10 +29,6 @@ const HomepageLink = styled(Link)`
   font-size: 1.5rem;
   font-weight: 600;
   margin-right: auto;
-  &:hover,
-  &:focus {
-    text-decoration: none;
-  }
   @media screen and (max-width: 600px) {
     margin-right: 40px;
   }
@@ -49,23 +45,27 @@ const GithubLink = styled(Container)`
 `
 const MenuNav = styled.nav`
   height: 100%;
+  z-index: 10;
   @media screen and (max-width: 600px) {
-    a {
-      display: none;
-    }
-    a.icon {
-      float: right;
-      display: block;
-    }
+    display: none;
   }
 `
+const openmenu: React.CSSProperties = {
+  display: 'block',
+  background: colors.brand,
+  position: 'absolute',
+  top: '60px',
+  right: '-1.5rem',
+  height: '150px'
+}
+const openli: React.CSSProperties = {
+  float: 'none'
+}
+
 const MenuLi = styled.li`
   float: left;
   display: block;
   height: '100%';
-  .icon {
-    display: none;
-  }
   a {
     display: block;
     color: #f2f2f2;
@@ -83,16 +83,23 @@ const MenuLi = styled.li`
      {
       position: relative;
     }
-    a.icon {
-      position: absolute;
-      right: 0;
-      top: 0;
-    }
-    a {
-      float: none;
-      display: none;
-      text-align: left;
-    }
+  }
+`
+const BargerBtn = styled.button`
+  display: none;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  padding: 0;
+  appearance: none;
+  margin-top: 16px;
+  @media screen and (max-width: 600px) {
+    display: block;
+    position: absolute;
+    float: right;
+    right: 0;
+    top: 0;
   }
 `
 const ActiveStyles = {
@@ -102,38 +109,46 @@ const ActiveStyles = {
 }
 interface HeaderProps {
   title: string
+  isopen: boolean
+  count: number
 }
 
-const Header: React.FC<HeaderProps> = ({ title }) => (
-  <StyledHeader>
-    <HeaderInner>
-      <HomepageLink to="/">{title}</HomepageLink>
-      <MenuNav>
-        <MenuLi>
-          <Link to="/data" activeStyle={ActiveStyles}>
-            データ一覧
-          </Link>
-        </MenuLi>
-        <MenuLi>
-          <Link to="/about" activeStyle={ActiveStyles}>
-            このサイトについて
-          </Link>
-        </MenuLi>
-        <MenuLi>
-          <GithubLink>
-            <a href="https://github.com/codeforjapan/mynumbercard_statistics">
-              <FontAwesomeIcon icon={faGithub} style={{ color: colors.white }} />
-            </a>
-          </GithubLink>
-        </MenuLi>
-        <MenuLi>
-          <a href="javascript:void(0);" className="icon" onClick={() => console.log('click')}>
+class Header extends React.Component<any, HeaderProps> {
+  constructor(args: any) {
+    super(args)
+    this.state = { title: args.title, isopen: false, count: 0 }
+  }
+  render() {
+    return (
+      <StyledHeader>
+        <HeaderInner>
+          <HomepageLink to="/">{this.state.title}</HomepageLink>
+          <MenuNav style={this.state.isopen ? openmenu : undefined}>
+            <MenuLi style={this.state.isopen ? openli : undefined}>
+              <Link to="/data" activeStyle={ActiveStyles}>
+                データ一覧
+              </Link>
+            </MenuLi>
+            <MenuLi style={this.state.isopen ? openli : undefined}>
+              <Link to="/about" activeStyle={ActiveStyles}>
+                このサイトについて
+              </Link>
+            </MenuLi>
+            <MenuLi style={this.state.isopen ? openli : undefined}>
+              <GithubLink>
+                <a href="https://github.com/codeforjapan/mynumbercard_statistics">
+                  <FontAwesomeIcon icon={faGithub} style={{ color: colors.white }} />
+                </a>
+              </GithubLink>
+            </MenuLi>
+          </MenuNav>
+          <BargerBtn className="icon" onClick={() => this.setState({ isopen: !this.state.isopen })}>
             <FontAwesomeIcon icon={faBars} style={{ color: colors.white }} />
-          </a>
-        </MenuLi>
-      </MenuNav>
-    </HeaderInner>
-  </StyledHeader>
-)
+          </BargerBtn>
+        </HeaderInner>
+      </StyledHeader>
+    )
+  }
+}
 
 export default Header
