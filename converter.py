@@ -243,6 +243,12 @@ class TypesConverter(Converter):
 class DemographicConverter(Converter):
     def _convert(self, _list: list) -> list:
         """
+        demographics.csvの一部の日付のファイルにおいて、
+        人口(計) がNULL、右隣の 交付件数(男) に値が2つ入ってしまっているケースがある
+        https://github.com/codeforjapan/mynumbercard_statistics/issues/86
+        """
+        _list = StringUtil.fix_numberfield_error(_list, 1, 13, [0, 1])
+        """
         CSVのヘッダが
         ["年齢","人口（H28.1.1時点）","","","交付件数（H29.5.15時点）","","","交付率","","","全体に対する交付件数割合","",""]
         ["","男","女","計","男","女","計","男","女","計","男","女","計"]
