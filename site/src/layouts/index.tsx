@@ -15,6 +15,16 @@ interface StaticQueryProps {
       title: string
       description: string
       keywords: string
+      siteUrl: string
+      type: string
+      siteName: string
+    }
+  }
+  file: {
+    childImageSharp: {
+      resize: {
+        src: string
+      }
     }
   }
 }
@@ -27,6 +37,16 @@ const IndexLayout: React.FC = ({ children }) => (
           siteMetadata {
             title
             description
+            siteUrl
+            type
+            siteName
+          }
+        }
+        file(relativePath: { eq: "logo.png" }) {
+          childImageSharp {
+            resize(width: 200) {
+              src
+            }
           }
         }
       }
@@ -37,7 +57,15 @@ const IndexLayout: React.FC = ({ children }) => (
           title={data.site.siteMetadata.title}
           meta={[
             { name: 'description', content: data.site.siteMetadata.description },
-            { name: 'keywords', content: data.site.siteMetadata.keywords }
+            { name: 'keywords', content: data.site.siteMetadata.keywords },
+            { property: 'og:title', content: data.site.siteMetadata.title },
+            { property: 'og:description', content: data.site.siteMetadata.description },
+            { property: 'og:url', content: data.site.siteMetadata.siteUrl },
+            { property: 'og:type', content: data.site.siteMetadata.type },
+            { property: 'og:site_name', content: data.site.siteMetadata.siteName },
+            { property: 'og:image', content: data.site.siteMetadata.siteUrl + data.file.childImageSharp.resize.src },
+            { property: 'og:image:width', content: '200' },
+            { property: 'og:image:height', content: '200' }
           ]}
         />
         <Header title={data.site.siteMetadata.title} />

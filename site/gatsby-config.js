@@ -1,23 +1,23 @@
-'use strict'
+"use strict";
 /* globals module: false */
 /*jshint node: true */
 /*jshint esversion: 6 */
 const siteUrl = 'https://mynumbercard.code4japan.org'
-module.exports = {
-  // jshint ignore:line
+module.exports = { // jshint ignore:line
   siteMetadata: {
     title: 'マイナンバーカード普及状況ダッシュボード',
     description: 'マイナンバーカードノ普及状況をダッシュボード形式で表示するサイトです。',
     keywords: 'マイナンバーカード, 普及率, オープンデータ',
     siteUrl: siteUrl,
+    type: 'website',
+    siteName: 'マイナンバーカード普及状況ダッシュボード',
     author: {
       name: 'Code for Japan',
       url: 'https://code4japan.org/',
       email: 'info0code4japan.org'
     }
   },
-  plugins: [
-    {
+  plugins: [{
       resolve: 'gatsby-source-filesystem',
       options: {
         name: 'data',
@@ -33,13 +33,19 @@ module.exports = {
       }
     },
     {
+      resolve: 'gatsby-source-filesystem',
+      options: {
+        name: 'images',
+        path: `${__dirname}/src/images`,
+      }
+    },
+    {
       /**
        * convert markdown to html
        */
       resolve: 'gatsby-transformer-remark',
       options: {
-        plugins: [
-          {
+        plugins: [{
             resolve: 'gatsby-remark-responsive-iframe',
             options: {
               wrapperStyle: 'margin-bottom: 1rem'
@@ -95,10 +101,10 @@ module.exports = {
                   return {
                     dir: edge.node.fields.dir,
                     href: edge.node.fields.href
-                  }
+                  };
                 })
-              }
-            })
+              };
+            });
           }
         },
         nodesPerFeedFile: 300
@@ -121,4 +127,4 @@ module.exports = {
     'gatsby-transformer-sharp',
     'gatsby-plugin-react-helmet'
   ]
-}
+};

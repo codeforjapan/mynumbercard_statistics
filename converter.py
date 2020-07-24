@@ -24,9 +24,12 @@ def normalizechar(c: str) -> str:
 
 
 def normalize(s) -> str:
+    # see this: https://en.wikipedia.org/wiki/CJK_Radicals_Supplement
     if (type(s) is str):
-        return ''.join(list(map(normalizechar, list(s))))
-
+        ret = ''.join(list(map(normalizechar, list(s))))
+        # blow strings also should be fixed. https://ja.wiktionary.org/wiki/%E3%82%AB%E3%83%86%E3%82%B4%E3%83%AA:Unicode_CJK_Radicals_Supplement   # noqa: E501
+        table = str.maketrans("⺟⺠⻁⻄⻑⻘⻝⻤⻨⻩⻫⻭⻯⻲戶黑", "母民虎西長青食鬼麦黄斉歯竜亀戸黒")
+        return ret.translate(table)
     else:
         return s
 
@@ -132,7 +135,8 @@ class Converter:
         new_list = list(map(lambda x:
                             list(map(lambda y: normalize(y),
                                      x)), new_list))
-        header = ['公開日'] + new_list[0]
+
+        header = ['算出基準日'] + new_list[0]
         ret = [header] + list(map(lambda x:
                                   [created_at.strftime('%Y/%m/%d')] + x,
                                   new_list[1:]))
@@ -229,7 +233,8 @@ class TypesConverter(Converter):
         card_date = StringUtil.extract_date_from_header(_list[0][3])
         if (card_date is not None):
             card_ymd = card_date.strftime('%Y/%m/%d')
-        header = ["区分", "", "人口", "交付枚数", "人口に対する交付枚数率", "人口算出基準日", "交付件数基準日"]
+        header = ["区分", "", "人口", "交付枚数",
+                  "人口に対する交付枚数率", "人口算出基準日", "交付枚数算出基準日"]
         data = list(map(lambda x: x + [population_ymd, card_ymd], _list[1:]))
         self._list = [header] + data
         return self._list
@@ -238,22 +243,17 @@ class TypesConverter(Converter):
 class DemographicConverter(Converter):
     def _convert(self, _list: list) -> list:
         """
-    なぜか データの1行目の人口(女)と人口(計)がくっついて閉まっているので分割する
-    '65,269,421 127,443,563  11,249,560' というふうになっている
-    """
-        fixdata = _list[2][3]
-
-        if (type(fixdata) is str):
-            _list[2][2] = int(fixdata.split()[0].replace(',', ''))
-            _list[2][3] = int(fixdata.split()[1].replace(',', ''))
-            if (len(fixdata.split(' ')) > 2):
-                _list[2][4] = int(fixdata.split()[2].replace(',', ''))
+        demographics.csvの一部の日付のファイルにおいて、
+        人口(計) がNULL、右隣の 交付件数(男) に値が2つ入ってしまっているケースがある
+        https://github.com/codeforjapan/mynumbercard_statistics/issues/86
         """
-    CSVのヘッダが
-    ["年齢","人口（H28.1.1時点）","","","交付件数（H29.5.15時点）","","","交付率","","","全体に対する交付件数割合","",""]
-    ["","男","女","計","男","女","計","男","女","計","男","女","計"]
-    という2段組になってしまっているので、ヘッダを一行にして、（＊時点）の部分を抜き出して最終列に加える処理を行う
-    """
+        _list = StringUtil.fix_numberfield_error(_list, 1, 13, [0, 1])
+        """
+        CSVのヘッダが
+        ["年齢","人口（H28.1.1時点）","","","交付件数（H29.5.15時点）","","","交付率","","","全体に対する交付件数割合","",""]
+        ["","男","女","計","男","女","計","男","女","計","男","女","計"]
+        という2段組になってしまっているので、ヘッダを一行にして、（＊時点）の部分を抜き出して最終列に加える処理を行う
+        """
         population_ymd = StringUtil.extract_date_from_header(
             self._list[0][1]).strftime('%Y/%m/%d')
         card_ymd = StringUtil.extract_date_from_header(
@@ -262,7 +262,7 @@ class DemographicConverter(Converter):
                   "交付件数(女)", "交付件数(計)",
                   "交付率(男)", "交付率(女)", "交付率(計)",
                   "全体に対する交付件数割合(男)", "全体に対する交付件数割合(女)", "全体に対する交付件数割合(計)",
-                  "人口算出基準日", "交付件数基準日"]
+                  "人口算出基準日", "交付枚数算出基準日"]
         self._list = [
             header] + list(map(lambda x: x +
                                [population_ymd, card_ymd], _list[2:]))
@@ -287,7 +287,8 @@ class PrefecturesConverter(Converter):
         card_date = StringUtil.extract_date_from_header(_list[0][2])
         if (card_date is not None):
             card_ymd = card_date.strftime('%Y/%m/%d')
-        header = ["都道府県名", "総数（人口）", "交付枚数", "交付率", "人口算出基準日", "交付件数基準日"]
+        header = ["都道府県名", "総数（人口）", "交付枚数",
+                  "人口に対する交付枚数率", "人口算出基準日", "交付枚数算出基準日"]
         data = list(map(lambda x: x + [population_ymd, card_ymd], _list[1:]))
         self._list = [header] + data
         return self._list
@@ -297,6 +298,8 @@ class PrefecturesConverter(Converter):
             self._alllist.extend(self.convert(list, created_at))
         else:
             self._alllist = self.convert(list, created_at) + self._alllist[1:]
+        self._alllist = StringUtil.complement_error_lines(
+            self._alllist, 6, True)
 
 
 class LocalgovsConverter(Converter):
@@ -317,7 +320,7 @@ class LocalgovsConverter(Converter):
         if (card_date is not None):
             card_ymd = card_date.strftime('%Y/%m/%d')
         header = ["都道府県名", "市区町村名", "総数（人口）",
-                  "交付枚数", "交付率", "人口算出基準日", "交付件数基準日"]
+                  "交付枚数", "人口に対する交付枚数率", "人口算出基準日", "交付件数基準日"]
         if (_list[1][0] == '全国'):  # remove 全国
             data = list(
                 map(lambda x: x + [population_ymd, card_ymd], _list[2:]))
