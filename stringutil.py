@@ -64,11 +64,13 @@ class StringUtil():
             text (str): text
         """
         if (text.replace(',', '').replace('.', '').replace('-', '')
-                .replace('%', '').isnumeric()):
+                .replace('%', '').replace('％', '').isnumeric()):
             if ('.' in text):
-                return float(text.replace(',', '').replace('%', ''))
+                return float(text.replace(',', '').replace('%', '')
+                             .replace('％', ''))
             else:
-                return int(text.replace(',', '').replace('%', ''))
+                return int(text.replace(',', '').replace('%', '')
+                           .replace('％', ''))
         return text
 
     @staticmethod
