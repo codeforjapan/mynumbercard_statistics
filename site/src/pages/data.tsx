@@ -51,7 +51,7 @@ const Dirs: React.FC<DirProps> = ({ data }) => (
 export default Dirs
 export const query = graphql`
   query {
-    allDirectory(filter: { relativePath: { ne: "" } }) {
+    allDirectory(filter: { relativePath: { ne: "" }, fields: { slug: { regex: "/.*/" } } }) {
       edges {
         node {
           name
