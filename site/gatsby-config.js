@@ -18,8 +18,7 @@ module.exports = {
       email: 'info0code4japan.org'
     }
   },
-  plugins: [
-    {
+  plugins: [{
       resolve: 'gatsby-source-filesystem',
       options: {
         name: 'data',
@@ -47,8 +46,7 @@ module.exports = {
        */
       resolve: 'gatsby-transformer-remark',
       options: {
-        plugins: [
-          {
+        plugins: [{
             resolve: 'gatsby-remark-responsive-iframe',
             options: {
               wrapperStyle: 'margin-bottom: 1rem'
@@ -65,8 +63,7 @@ module.exports = {
               linkImagesToOriginal: false,
               showCaptions: true
             }
-          },
-          'gatsby-remark-attr'
+          }
         ]
       }
     },
