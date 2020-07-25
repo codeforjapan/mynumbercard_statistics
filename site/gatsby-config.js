@@ -1,12 +1,13 @@
-"use strict";
+'use strict'
 /* globals module: false */
 /*jshint node: true */
 /*jshint esversion: 6 */
 const siteUrl = 'https://mynumbercard.code4japan.org'
-module.exports = { // jshint ignore:line
+module.exports = {
+  // jshint ignore:line
   siteMetadata: {
     title: 'マイナンバーカード普及状況ダッシュボード',
-    description: 'マイナンバーカードノ普及状況をダッシュボード形式で表示するサイトです。',
+    description: 'マイナンバーカードの普及状況をダッシュボード形式で表示するサイトです。CSVデータもダウンロードできます。',
     keywords: 'マイナンバーカード, 普及率, オープンデータ',
     siteUrl: siteUrl,
     type: 'website',
@@ -17,7 +18,8 @@ module.exports = { // jshint ignore:line
       email: 'info0code4japan.org'
     }
   },
-  plugins: [{
+  plugins: [
+    {
       resolve: 'gatsby-source-filesystem',
       options: {
         name: 'data',
@@ -36,7 +38,7 @@ module.exports = { // jshint ignore:line
       resolve: 'gatsby-source-filesystem',
       options: {
         name: 'images',
-        path: `${__dirname}/src/images`,
+        path: `${__dirname}/src/images`
       }
     },
     {
@@ -45,7 +47,8 @@ module.exports = { // jshint ignore:line
        */
       resolve: 'gatsby-transformer-remark',
       options: {
-        plugins: [{
+        plugins: [
+          {
             resolve: 'gatsby-remark-responsive-iframe',
             options: {
               wrapperStyle: 'margin-bottom: 1rem'
@@ -59,9 +62,11 @@ module.exports = { // jshint ignore:line
             options: {
               maxWidth: 1140,
               quality: 90,
-              linkImagesToOriginal: false
+              linkImagesToOriginal: false,
+              showCaptions: true
             }
-          }
+          },
+          'gatsby-remark-attr'
         ]
       }
     },
@@ -101,10 +106,10 @@ module.exports = { // jshint ignore:line
                   return {
                     dir: edge.node.fields.dir,
                     href: edge.node.fields.href
-                  };
+                  }
                 })
-              };
-            });
+              }
+            })
           }
         },
         nodesPerFeedFile: 300
@@ -127,4 +132,4 @@ module.exports = { // jshint ignore:line
     'gatsby-transformer-sharp',
     'gatsby-plugin-react-helmet'
   ]
-};
+}
