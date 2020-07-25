@@ -10,6 +10,25 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGithub } from '@fortawesome/free-brands-svg-icons'
 import { faBars } from '@fortawesome/free-solid-svg-icons'
 
+type LinkType = {
+  page: string
+  text: string
+}
+export const MenuLInks: LinkType[] = [
+  {
+    page: '/data',
+    text: 'データ一覧'
+  },
+  {
+    page: '/chant',
+    text: 'データ供養の方法'
+  },
+  {
+    page: '/about',
+    text: 'このサイトについて'
+  }
+]
+
 const StyledHeader = styled.header`
   height: ${heights.header}px;
   padding: 0 ${dimensions.containerPadding}rem;
@@ -56,7 +75,7 @@ const openmenu: React.CSSProperties = {
   position: 'absolute',
   top: '60px',
   right: '-1.5rem',
-  height: '150px'
+  height: `${MenuLInks.length * 54 + 40}px`
 }
 const openli: React.CSSProperties = {
   float: 'none'
@@ -124,19 +143,16 @@ class Header extends React.Component<any, HeaderProps> {
         <HeaderInner>
           <HomepageLink to="/">{this.state.title}</HomepageLink>
           <MenuNav style={this.state.isopen ? openmenu : undefined}>
-            <MenuLi style={this.state.isopen ? openli : undefined}>
-              <Link to="/data" activeStyle={ActiveStyles}>
-                データ一覧
-              </Link>
-            </MenuLi>
-            <MenuLi style={this.state.isopen ? openli : undefined}>
-              <Link to="/about" activeStyle={ActiveStyles}>
-                このサイトについて
-              </Link>
-            </MenuLi>
+            {MenuLInks.map(({ page, text }) => (
+              <MenuLi style={this.state.isopen ? openli : undefined}>
+                <Link to={page} activeStyle={ActiveStyles}>
+                  {text}
+                </Link>
+              </MenuLi>
+            ))}
             <MenuLi style={this.state.isopen ? openli : undefined}>
               <GithubLink>
-                <a href="https://github.com/codeforjapan/mynumbercard_statistics">
+                <a href="">
                   <FontAwesomeIcon icon={faGithub} style={{ color: colors.white }} />
                 </a>
               </GithubLink>
