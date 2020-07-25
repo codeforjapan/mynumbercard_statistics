@@ -14,9 +14,7 @@ PDF から CSV に自動で変換できるのならば、PDF のままでもよ�
 
 当該 PDF で公開されているのは主に「**表形式**」のファイルで、団体区分別の交付率、区分別交付率上位 10 位、都道府県の交付率一覧、男女・年齢別の集計、市区町村の交付率一覧の表が公開されています。
 
-![1ページ目](images/page-1.png)
-
-<div class="caption">(データサンプル)</div>
+![データサンプル](images/page-1.png)
 
 これらをグラフではなく表敬式で公開するということは、利用用途として「データとして活用してもらう」ために行っていると思って良いでしょう。
 特に後半の市区町村別のリストなどは、そのまま眺めていてもあまり意味がありません。
@@ -96,7 +94,7 @@ PDF から `camelot` で CSV を抽出した場合、改ページなどの影響
 
 人口及び交付枚数は、下記のようにテーブルのヘッダに算出基準日が記載されています。ただし、これを BI ツール等から読み込もうとしても違う列と判断されてしまいますし、基準日という重要な情報がカラム名に入ってしまいます。したがって、[ヘッダの文字列から日付を抜き出し、列として追加しています。](https://github.com/codeforjapan/mynumbercard_statistics/blob/5c39063cad09eaae3e3bafa94d9de651a74f809f/stringutil.py#L8)
 
-![cell](images/cells.png)
+![日付入りのデータ](images/cells.png){width=50 height=50}
 
 ```python
 def extract_date_from_header(header: str) -> datetime:

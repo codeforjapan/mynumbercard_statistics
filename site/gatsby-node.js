@@ -170,10 +170,10 @@ exports.createPages = async ({
         }
       }
     }
-  `)
+  `);
   if (allMarkdown.errors) {
-    console.error(allMarkdown.errors)
-    throw new Error(allMarkdown.errors)
+    console.error(allMarkdown.errors);
+    throw new Error(allMarkdown.errors);
   }
 
   allMarkdown.data.allMarkdownRemark.edges.forEach(({
