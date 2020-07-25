@@ -144,16 +144,18 @@ exports.createPages = async ({
   dirNodes.data.allDirectory.edges.forEach(({
     node
   }) => {
-    const {
-      slug
-    } = node.fields;
-    createPage({
-      path: slug,
-      component: path.resolve('./src/templates/datadir.tsx'),
-      context: {
+    if (node.fields) {
+      const {
         slug
-      }
-    });
+      } = node.fields;
+      createPage({
+        path: slug,
+        component: path.resolve('./src/templates/datadir.tsx'),
+        context: {
+          slug
+        }
+      });
+    }
   });
   const allMarkdown = await graphql(`
     {

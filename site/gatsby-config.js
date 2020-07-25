@@ -6,7 +6,7 @@ const siteUrl = 'https://mynumbercard.code4japan.org'
 module.exports = { // jshint ignore:line
   siteMetadata: {
     title: 'マイナンバーカード普及状況ダッシュボード',
-    description: 'マイナンバーカードノ普及状況をダッシュボード形式で表示するサイトです。',
+    description: 'マイナンバーカードの普及状況をダッシュボード形式で表示するサイトです。CSVデータもダウンロードできます。',
     keywords: 'マイナンバーカード, 普及率, オープンデータ',
     siteUrl: siteUrl,
     type: 'website',
