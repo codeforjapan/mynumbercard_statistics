@@ -121,6 +121,14 @@ class Converter:
         else:
             return None
 
+    def merge_rows(self, _list: list, row_1: int, row_2: int) -> list:
+        ret = []
+        for line in _list:
+            line[row_1] = line[row_1] + line[row_2]
+            line.pop(row_2)
+            ret.append(line)
+        return ret
+
     def convert(self, _list: list, created_at: date) -> list:
         """convert data
 
@@ -233,10 +241,10 @@ class TypesConverter(Converter):
         card_date = StringUtil.extract_date_from_header(_list[0][3])
         if (card_date is not None):
             card_ymd = card_date.strftime('%Y/%m/%d')
-        header = ["区分", "", "人口", "交付枚数",
+        header = ["区分", "人口", "交付枚数",
                   "人口に対する交付枚数率", "人口算出基準日", "交付枚数算出基準日"]
         data = list(map(lambda x: x + [population_ymd, card_ymd], _list[1:]))
-        self._list = [header] + data
+        self._list = [header] + self.merge_rows(data, 0, 1)
         return self._list
 
 
