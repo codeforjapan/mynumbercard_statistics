@@ -34,7 +34,7 @@ const DataTemplate: React.FC<DataTemplateProps> = ({ data, pageContext }) => (
         <h1>{pageContext.slug}</h1>
         <ul>
           {data.allFile.edges.map(({ node }) => (
-            <li>
+            <li key={node.base}>
               <a href={node.fields.href}>{node.base}</a>
             </li>
           ))}
