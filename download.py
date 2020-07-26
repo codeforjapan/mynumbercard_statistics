@@ -26,7 +26,8 @@ def getFileID(filepath: str):
 def loadPDF(filepath: str):
     print("load: " + filepath)
     id = getFileID(filepath)
-    tables = camelot.read_pdf(filepath, pages="all", line_scale=40)
+    tables = camelot.read_pdf(filepath, pages="all",
+                              split_text=True, strip_text="\n", line_scale=40)
     print("Total tables extracted:", tables.n)
     if (not os.path.exists('./data/raw')):
         os.makedirs('./data/raw')
