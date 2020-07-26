@@ -82,8 +82,9 @@ class Converter:
         """
         if (len(self._alllist) == 0):
             return
-        with open('{0}/{1}.csv'.format(path, self._ftype.value), 'w') as f:
-            writer = csv.writer(f, quoting=csv.QUOTE_NONNUMERIC)
+        with open('{0}/{1}.csv'.format(path, self._ftype.value), 'w', encoding="utf_8_sig") as f:
+            writer = csv.writer(
+                f, quoting=csv.QUOTE_NONNUMERIC, lineterminator='\n')
             writer.writerows(self._alllist)
         print(
             '* saved {0} lines for {1}.csv'.format(len(self._alllist),
