@@ -152,7 +152,7 @@ class Header extends React.Component<any, HeaderProps> {
             ))}
             <MenuLi style={this.state.isopen ? openli : undefined}>
               <GithubLink>
-                <a href="">
+                <a href="https://github.com/codeforjapan/mynumbercard_statistics">
                   <FontAwesomeIcon icon={faGithub} style={{ color: colors.white }} />
                 </a>
               </GithubLink>
