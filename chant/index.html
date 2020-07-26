@@ -29,7 +29,7 @@ PDF から CSV に自動で変換できるのならば、PDF のままでもよ�
     </span>
     <figcaption class="gatsby-resp-image-figcaption">データサンプル</figcaption>
   </figure></p>
-<p>これらをグラフではなく表敬式で公開するということは、利用用途として「データとして活用してもらう」ために行っていると思って良いでしょう。
+<p>これらをグラフではなく表形式で公開するということは、利用用途として「データとして活用してもらう」ために行っていると思って良いでしょう。
 特に後半の市区町村別のリストなどは、そのまま眺めていてもあまり意味がありません。
 データとして活用してもらうのであれば、EXCEL 等のファイルをそのまま掲載するべきです。PDF を作る前に EXCEL などのツールで集計していることは想像に難くありませんので、ぜひそのファイルを公開してほしいものです。</p>
 <p>生成された PDF から、もともとあったであろうデータを取り出すことは、しばしば「<strong>餅から米を作る</strong>」とも表現されます。今回はプログラムで CSV 化を行っていますが、プログラムを介さずに PDF からコピーペーストで市区町村のデータを作ろうとすると、PDF から EXCEL に 32 回のコピーペーストを行い、更に”,“や”%“を削ったりして文字型から数値型に変換する必要があります。この作業を、記事執筆現在公開されている 17 ファイル分行ってもらうことを、政府担当者は想定しているのでしょうか。気が遠くなる作業です。</p>
@@ -103,7 +103,7 @@ PDF から CSV に自動で変換できるのならば、PDF のままでもよ�
       />
     </span>
     <figcaption class="gatsby-resp-image-figcaption">日付入りのデータ</figcaption>
-  </figure>{width=50 height=50}</p>
+  </figure></p>
 <div class="gatsby-highlight" data-language="python"><pre class="language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">extract_date_from_header</span><span class="token punctuation">(</span>header<span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">></span> datetime<span class="token punctuation">:</span>
     <span class="token triple-quoted-string string">"""'人口（H28.1.1時点）' といったテキストから日付を取得
     Args:
