@@ -40,6 +40,8 @@ tables = camelot.read_pdf(filepath, pages="all", line_scale=40)
 しかし、表によっては`camelot`がうまくパースできず、スペースでつながったデータができてしまい、代わりに隣列が空白になってしまうなどの不具合がありました。
 [100 行近くのスクリプト](https://github.com/codeforjapan/mynumbercard_statistics/blob/5c39063cad09eaae3e3bafa94d9de651a74f809f/stringutil.py#L105)を書いて、誤変換を発見し修正しています。
 
+(2020/07/26 追記：その後、read_pdf のパラメータを調整することにより、誤変換は解消されました。)
+
 ### 2. カンマや%を取り除いて文字列を数字データに変換する
 
 3 桁区切りの数字は、人間には読みやすいですがコンピューターには数字として認識されません。したがって、数値型であるべきフィールドは、[","や"%"を取り除いて数字型に変換しています。](https://github.com/codeforjapan/mynumbercard_statistics/blob/5c39063cad09eaae3e3bafa94d9de651a74f809f/stringutil.py#L60)
