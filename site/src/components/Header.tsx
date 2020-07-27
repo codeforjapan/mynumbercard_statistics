@@ -92,10 +92,10 @@ const MenuLi = styled.li`
     text-decoration: none;
     font-size: 17px;
     margin-top: 8px;
-  }
-  a: hover {
-    background-color: #ddd;
-    color: black;
+    &:hover {
+      background-color: #ddd;
+      color: black;
+    }
   }
   @media screen and (max-width: 600px) {
     position: relative;
