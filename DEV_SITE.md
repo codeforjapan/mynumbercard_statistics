@@ -37,3 +37,7 @@ gatsby develop
 ```bash
 yarn build
 ```
+
+### Preview site
+
+Commit to the `development` will update https://mynumbercard.netlify.app/ 
