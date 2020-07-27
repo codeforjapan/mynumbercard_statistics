@@ -125,7 +125,6 @@ const ActiveStyles = {
 }
 interface HeaderProps {
   title: string
-  isopen?: boolean
 }
 
 const Header: React.FC<HeaderProps> = ({ title }) => {
