@@ -136,7 +136,7 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
         <HomepageLink to="/">{title}</HomepageLink>
         <MenuNav style={isOpen ? openmenu : undefined}>
           {MenuLInks.map(({ page, text }) => (
-            <MenuLi style={isOpen ? openli : undefined}>
+            <MenuLi style={isOpen ? openli : undefined} key={page}>
               <Link to={page} activeStyle={ActiveStyles}>
                 {text}
               </Link>
