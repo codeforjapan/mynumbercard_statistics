@@ -37,7 +37,6 @@ export const query = graphql`
       excerpt
       frontmatter {
         title
-        path
       }
     }
   }
