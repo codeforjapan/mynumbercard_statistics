@@ -3,12 +3,11 @@ import styled from '@emotion/styled'
 import { transparentize } from 'polished'
 import { Link } from 'gatsby'
 
-import { heights, dimensions, colors } from '../styles/variables'
-import Container from './Container'
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGithub } from '@fortawesome/free-brands-svg-icons'
 import { faBars } from '@fortawesome/free-solid-svg-icons'
+import Container from './Container'
+import { heights, dimensions, colors } from '../styles/variables'
 
 type LinkType = {
   page: string
@@ -99,9 +98,7 @@ const MenuLi = styled.li`
     color: black;
   }
   @media screen and (max-width: 600px) {
-     {
-      position: relative;
-    }
+    position: relative;
   }
 `
 const BargerBtn = styled.button`
@@ -128,43 +125,37 @@ const ActiveStyles = {
 }
 interface HeaderProps {
   title: string
-  isopen: boolean
-  count: number
+  isopen?: boolean
 }
 
-class Header extends React.Component<any, HeaderProps> {
-  constructor(args: any) {
-    super(args)
-    this.state = { title: args.title, isopen: false, count: 0 }
-  }
-  render() {
-    return (
-      <StyledHeader>
-        <HeaderInner>
-          <HomepageLink to="/">{this.state.title}</HomepageLink>
-          <MenuNav style={this.state.isopen ? openmenu : undefined}>
-            {MenuLInks.map(({ page, text }) => (
-              <MenuLi style={this.state.isopen ? openli : undefined}>
-                <Link to={page} activeStyle={ActiveStyles}>
-                  {text}
-                </Link>
-              </MenuLi>
-            ))}
-            <MenuLi style={this.state.isopen ? openli : undefined}>
-              <GithubLink>
-                <a href="https://github.com/codeforjapan/mynumbercard_statistics">
-                  <FontAwesomeIcon icon={faGithub} style={{ color: colors.white }} />
-                </a>
-              </GithubLink>
+const Header: React.FC<HeaderProps> = ({ title }) => {
+  const [isOpen, setOpen] = React.useState(false)
+  const toggleOpen = React.useCallback(() => setOpen(prevState => !prevState), [])
+  return (
+    <StyledHeader>
+      <HeaderInner>
+        <HomepageLink to="/">{title}</HomepageLink>
+        <MenuNav style={isOpen ? openmenu : undefined}>
+          {MenuLInks.map(({ page, text }) => (
+            <MenuLi style={isOpen ? openli : undefined}>
+              <Link to={page} activeStyle={ActiveStyles}>
+                {text}
+              </Link>
             </MenuLi>
-          </MenuNav>
-          <BargerBtn className="icon" onClick={() => this.setState({ isopen: !this.state.isopen })}>
-            <FontAwesomeIcon icon={faBars} style={{ color: colors.white }} />
-          </BargerBtn>
-        </HeaderInner>
-      </StyledHeader>
-    )
-  }
+          ))}
+          <MenuLi style={isOpen ? openli : undefined}>
+            <GithubLink>
+              <a href="https://github.com/codeforjapan/mynumbercard_statistics">
+                <FontAwesomeIcon icon={faGithub} style={{ color: colors.white }} />
+              </a>
+            </GithubLink>
+          </MenuLi>
+        </MenuNav>
+        <BargerBtn className="icon" onClick={toggleOpen}>
+          <FontAwesomeIcon icon={faBars} style={{ color: colors.white }} />
+        </BargerBtn>
+      </HeaderInner>
+    </StyledHeader>
+  )
 }
-
 export default Header
