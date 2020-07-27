@@ -1,13 +1,13 @@
 import * as React from 'react'
 import Helmet from 'react-helmet'
+import { useLocation } from '@reach/router'
+import { MenuLInks } from '../components/Header'
 import { useMeta } from '../hooks'
 
-type Props = {
-  pageTitle?: string;
-  pathname: string;
-}
-const Meta: React.FC<Props> = ({ pageTitle, pathname }) => {
+const Meta: React.FC = () => {
   const { siteMetadata, file } = useMeta()
+  const { pathname } = useLocation()
+  const pageTitle = MenuLInks.find(m => m.page === pathname)?.text
   const siteTitle = React.useMemo(() => (pageTitle ? `${pageTitle} - ${siteMetadata.title}` : siteMetadata.title), [
     pageTitle,
     siteMetadata.title
