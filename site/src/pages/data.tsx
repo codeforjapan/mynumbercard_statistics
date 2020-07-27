@@ -23,7 +23,7 @@ interface DirProps {
 }
 
 const Dirs: React.FC<DirProps> = ({ data }) => (
-  <IndexLayout>
+  <IndexLayout title="データ一覧">
     <Page>
       <Container>
         <h1>データ一覧</h1>
