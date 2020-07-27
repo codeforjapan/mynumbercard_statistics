@@ -5,7 +5,7 @@ import '../styles/normalize'
 import Header from '../components/Header'
 import LayoutRoot from '../components/LayoutRoot'
 import LayoutMain from '../components/LayoutMain'
-import Meta from '../components/Meta'
+import Head from '../components/Head'
 import { useMeta } from '../hooks'
 
 type Props = {
@@ -16,7 +16,7 @@ const IndexLayout: React.FC<Props> = ({ children }) => {
   const { siteMetadata } = useMeta()
   return (
     <>
-      <Meta />
+      <Head />
       <LayoutRoot>
         <Header title={siteMetadata.title} />
         <LayoutMain>{children}</LayoutMain>

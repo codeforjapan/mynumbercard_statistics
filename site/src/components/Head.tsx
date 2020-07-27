@@ -4,7 +4,7 @@ import { useLocation } from '@reach/router'
 import { MenuLInks } from '../components/Header'
 import { useMeta } from '../hooks'
 
-const Meta: React.FC = () => {
+const Head: React.FC = () => {
   const { siteMetadata, file } = useMeta()
   const { pathname } = useLocation()
   const pageTitle = MenuLInks.find(m => m.page === pathname)?.text
@@ -33,4 +33,4 @@ const Meta: React.FC = () => {
   )
 }
 
-export default Meta;
+export default Head;
