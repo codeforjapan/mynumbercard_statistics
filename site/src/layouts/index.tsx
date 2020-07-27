@@ -12,10 +12,10 @@ import { useMeta } from '../hooks'
 const IndexLayout: React.FC = ({ children }) => {
   const { siteMetadata, file } = useMeta()
   const { pathname } = useLocation()
-  const pageTitle = React.useMemo(() => MenuLInks.find(m => m.page === pathname)?.text, [MenuLInks])
+  const pageTitle = React.useMemo(() => MenuLInks.find(m => m.page === pathname)?.text, [pathname])
   const siteTitle = React.useMemo(() => (pageTitle ? `${pageTitle} - ${siteMetadata.title}` : siteMetadata.title), [
     pageTitle,
-    siteMetadata
+    siteMetadata.title
   ])
   return (
     <LayoutRoot>
