@@ -78,4 +78,8 @@ if __name__ == "__main__":
                     l.append(list(map(StringUtil.to_number, row)))
             processor.appendData(l)
         # save extended data
-        processor.saveFiles(OUT_DIR + "/" + ymd)
+        if (key == list(loaded.keys())[-1]):
+            # last file data as latest data
+            processor.saveFiles(OUT_DIR + "/" + "latest")
+        else:
+            processor.saveFiles(OUT_DIR + "/" + ymd)
