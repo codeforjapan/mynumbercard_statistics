@@ -18,9 +18,14 @@ args = docopt(__doc__)
 
 
 def getFileID(filepath: str):
-    return filepath.rsplit('/', 1)[1].replace('.pdf', '')
+    return filepath.rsplit('/', 1)[1].replace('.pdf', '').replace('.xlsx', '')
 
 # load PDF file and save table data to csv files
+
+
+def loadExcel(filepath: str):
+    raise Exception("Excel parser is not implemented yet")
+    # not implemented yet
 
 
 def loadPDF(filepath: str):
@@ -62,14 +67,33 @@ if __name__ == "__main__":
 
     # read PDF links
     for elem in result:
-        link = elem.find('a')
-        id = getFileID(link.get('href'))
-        if (loaded.get(id)):
-            print("skip " + link.text)
+        links = elem.findall('a')
+        if (len(links) == 1):
+            link = links[0]
+            id = getFileID(link.get('href'))
+            if (loaded.get(id)):
+                print("skip " + link.text)
+            else:
+                print("get " + link.text)
+                loadPDF(link.get('href'))
+                loaded[id] = link.text
         else:
-            print("get " + link.text)
-            loadPDF(link.get('href'))
-            loaded[id] = link.text
+            # in case that Excel file is provided
+            fname = links[0].get('href')
+            id = getFileID(fname)
+            if (loaded.get(id)):
+                print("skip " + elem.text)
+            else:
+                if (fname.endswith('.xlsx')):
+                    print("get Excel " + fname)
+                    loadExcel(fname)
+                    loaded[id] = elem.text
+                elif (fname.endswith('.pdf')):
+                    print("get PDF " + fname)
+                    loadPDF(fname)
+                    loaded[id] = elem.text
+                else:
+                    print("file format is unknown")
 
     # save loaded files data
     with open(DATA_FILE, 'w', encoding='utf-8') as f:
