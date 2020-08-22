@@ -84,7 +84,8 @@ class Converter:
         """
         if (len(self._alllist) == 0):
             return
-        with open('{0}/{1}.csv'.format(path, self._ftype.value), 'w', encoding="utf_8_sig") as f:
+        with open('{0}/{1}.csv'.format(path, self._ftype.value), 'w',
+                  encoding="utf_8_sig") as f:
             writer = csv.writer(
                 f, quoting=csv.QUOTE_NONNUMERIC, lineterminator='\n')
             writer.writerows(self._alllist)
@@ -332,7 +333,7 @@ class LocalgovsConverter(Converter):
         else:
             data = list(
                 map(lambda x: x + [population_ymd, card_ymd], _list[1:]))
-        self._list = [header] + data
+        self._list = self._citycode.add_citycode(data, header)
         return self._list
 
     def appendData(self, _list: list, created_at: date):
