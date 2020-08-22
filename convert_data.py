@@ -54,12 +54,12 @@ if __name__ == "__main__":
     # load csv data
     for key in loaded.keys():
         date = StringUtil.extract_date_from_title(loaded.get(key))
-        ymd = date.strftime('%Y%m%d')
         if (not date):
             print('The system could not retrieve date string from the title "{0}" '
                   .format(
                       loaded.get(key)))
             continue
+        ymd = date.strftime('%Y%m%d')
         processor = Processor(date)  # create processor instance
         print('Create file for the date {0}'.format(date))
         target_dir = RAW_DIR + '/' + key
