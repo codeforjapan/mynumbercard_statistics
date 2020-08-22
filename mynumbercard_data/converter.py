@@ -4,6 +4,7 @@ import csv
 import unicodedata
 from stringutil import StringUtil
 from datetime import date
+from citycode import CityCode
 
 
 class FILETYPE(Enum):
@@ -39,6 +40,7 @@ class Converter:
         self._list = list
         self._alllist = []
         self._ftype = Converter.detectType(list)
+        self._citycode = CityCode()
 
     def add_list_column(self, data: list, adddata: list) -> list:
         """return new list that is added new list of adddata
