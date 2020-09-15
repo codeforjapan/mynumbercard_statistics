@@ -260,6 +260,7 @@ class DemographicConverter(Converter):
         ["","男","女","計","男","女","計","男","女","計","男","女","計"]
         という2段組になってしまっているので、ヘッダを一行にして、（＊時点）の部分を抜き出して最終列に加える処理を行う
         """
+        _list = StringUtil.fix_numberfield_error(_list, 1, 13, [0, 1])
         population_ymd = StringUtil.extract_date_from_header(
             self._list[0][1]).strftime('%Y/%m/%d')
         card_ymd = StringUtil.extract_date_from_header(
