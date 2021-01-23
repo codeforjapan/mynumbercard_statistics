@@ -14,8 +14,6 @@ import lxml.html
 from docopt import docopt
 import camelot
 
-args = docopt(__doc__)
-
 
 def getFileID(filepath: str):
     return filepath.rsplit('/', 1)[1].replace('.pdf', '').replace('.xlsx', '')
@@ -45,7 +43,7 @@ def loadPDF(filepath: str):
         table.to_csv(fname)
 
 
-if __name__ == "__main__":
+def main(args):
     # url of the mynumber card PDF
     PDF_URL = "https://www.soumu.go.jp/kojinbango_card/"
     ABSOLUTE_URL = "https://www.soumu.go.jp/kojinbango_card/"
@@ -98,3 +96,8 @@ if __name__ == "__main__":
     # save loaded files data
     with open(DATA_FILE, 'w', encoding='utf-8') as f:
         json.dump(loaded, f, indent=2, ensure_ascii=False)
+
+
+if __name__ == "__main__":
+    args = docopt(__doc__)
+    main(args)
