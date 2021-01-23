@@ -1,7 +1,7 @@
 """Tests of download.py"""
 
 from unittest import TestCase
-from unittest.mock import mock_open, patch
+from unittest.mock import call, mock_open, patch
 
 import lxml.html
 import pytest
@@ -68,6 +68,54 @@ class MainTestCase(TestCase):
             "./data/loaded_files.json", "w", encoding="utf-8"
         )
         json.dump.assert_called_once_with(
+            {"000490029": "マイナンバーカード交付状況（平成29年5月15日時点）"},
+            m(),
+            indent=2,
+            ensure_ascii=False,
+        )
+
+    @patch("mynumbercard_data.download.json.dump")
+    @patch("mynumbercard_data.download.loadPDF")
+    @patch("mynumbercard_data.download.lxml.html")
+    @patch("mynumbercard_data.download.urllib.request")
+    @patch("mynumbercard_data.download.os")
+    def test_when_only_pdf_link_with_cache(
+        self, os, urllib_request, lxml_html, loadPDF, json_dump
+    ):
+        args = Dict({"--all": False, "--help": False})
+        os.path.exists.return_value = True
+        tree = lxml_html.fromstring.return_value
+        tree.xpath.return_value = [pdf_only_list_item]
+        m = mock_open(
+            read_data='{\n  "000490029": "マイナンバーカード交付状況（平成29年5月15日時点）"\n}'
+        )
+
+        with patch("builtins.open", m):
+            download.main(args)
+
+        os.path.exists.assert_called_once_with("./data/loaded_files.json")
+        urllib_request.urlopen.assert_called_once_with(
+            "https://www.soumu.go.jp/kojinbango_card/"
+        )
+        urllib_request.urlopen.return_value.read.assert_called_once_with()
+        lxml_html.fromstring.assert_called_once_with(
+            urllib_request.urlopen.return_value.read.return_value
+        )
+        tree.xpath.assert_called_once_with(
+            '//*[@id="contentsWrapper"]/div[2]/div[2]/div[4]/ul/li'
+        )
+        tree.make_links_absolute.assert_called_once_with(
+            "https://www.soumu.go.jp/kojinbango_card/"
+        )
+        loadPDF.assert_not_called()
+        self.assertEqual(
+            m.call_args_list,
+            [
+                call("./data/loaded_files.json"),
+                call("./data/loaded_files.json", "w", encoding="utf-8"),
+            ],
+        )
+        json_dump.assert_called_once_with(
             {"000490029": "マイナンバーカード交付状況（平成29年5月15日時点）"},
             m(),
             indent=2,
