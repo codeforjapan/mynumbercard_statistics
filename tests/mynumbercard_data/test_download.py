@@ -28,7 +28,7 @@ pdf_only_list_item = lxml.html.fromstring(
     '<img alt="PDF" src="/main_content/000000011.gif"></a></li>'
 )
 pdf_and_excel_list_item = lxml.html.fromstring(
-    '<li>マイナンバーカード交付状況（令和2年8月1日現在）　'
+    "<li>マイナンバーカード交付状況（令和2年8月1日現在）　"
     '<a href="https://www.soumu.go.jp/main_content/000703057.pdf">PDF形式'
     '<img alt="" src="https://www.soumu.go.jp/main_content/000000011.gif" '
     'width="15" height="15"></a>　'
