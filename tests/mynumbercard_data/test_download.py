@@ -25,7 +25,8 @@ def test_getFileID(filepath, expected):
 pdf_only_list_item = lxml.html.fromstring(
     '<li><a href="https://www.soumu.go.jp/main_content/000490029.pdf">'
     "マイナンバーカード交付状況（平成29年5月15日時点）"
-    '<img alt="PDF" src="/main_content/000000011.gif"></a></li>'
+    '<img alt="PDF" src="https://www.soumu.go.jp/main_content/000000011.gif">'
+    "</a></li>"
 )
 pdf_and_excel_list_item = lxml.html.fromstring(
     "<li>マイナンバーカード交付状況（令和2年8月1日現在）　"
@@ -64,11 +65,11 @@ class MainTestCase(TestCase):
         lxml_html.fromstring.assert_called_once_with(
             urllib_request.urlopen.return_value.read.return_value
         )
-        tree.xpath.assert_called_once_with(
-            '//*[@id="contentsWrapper"]/div[2]/div[2]/div[4]/ul/li'
-        )
         tree.make_links_absolute.assert_called_once_with(
             "https://www.soumu.go.jp/kojinbango_card/"
+        )
+        tree.xpath.assert_called_once_with(
+            '//*[@id="contentsWrapper"]/div[2]/div[2]/div[4]/ul/li'
         )
         loadPDF.assert_called_once_with(
             "https://www.soumu.go.jp/main_content/000490029.pdf"
@@ -110,11 +111,11 @@ class MainTestCase(TestCase):
         lxml_html.fromstring.assert_called_once_with(
             urllib_request.urlopen.return_value.read.return_value
         )
-        tree.xpath.assert_called_once_with(
-            '//*[@id="contentsWrapper"]/div[2]/div[2]/div[4]/ul/li'
-        )
         tree.make_links_absolute.assert_called_once_with(
             "https://www.soumu.go.jp/kojinbango_card/"
+        )
+        tree.xpath.assert_called_once_with(
+            '//*[@id="contentsWrapper"]/div[2]/div[2]/div[4]/ul/li'
         )
         loadPDF.assert_not_called()
         self.assertEqual(
