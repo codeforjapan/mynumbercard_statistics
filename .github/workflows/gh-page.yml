@@ -22,7 +22,36 @@ jobs:
           path: data
           key: ${{ runner.os }}-mynumbercard-${{ hashFiles(format('{0}{1}', github.workspace, '/VERSION')) }}
           restore-keys: ${{ runner.os }}-mynumbercard-
-      - name: Build Image
+
+      - uses: actions/checkout@v2
+      - id: cache-docker
+        uses: actions/cache@v1
+        with:
+          path: /tmp/docker-registry
+          key: docker-registry-no-buildkit-${{ hashFiles('Dockerfile') }}
+
+      - name: Start local registry
+        run: docker run -d -p 5000:5000 --restart=always --name registry -v /tmp/docker-registry:/var/lib/registry registry:2 && npx wait-on tcp:5000
+
+      - name: Pull docker image from local registry
+        run: docker pull localhost:5000/mynumbercard-app || true
+
+      - name: Build Image when docker image cache not hit
+        run: docker build . -t mynumbercard-app --cache-from=localhost:5000/mynumbercard-app
+        if: steps.cache-docker.outputs.cache-hit != 'true'
+
+      - name: Push Image to local registry when docker image cache not hit
+        run: docker tag mynumbercard-app localhost:5000/mynumbercard-app && docker push localhost:5000/mynumbercard-app || true
+        if: steps.cache-docker.outputs.cache-hit != 'true'
+
+      - name: Tag pulled image to use docker-compose
+        run: docker tag localhost:5000/mynumbercard-app mynumbercard-app
+        if: steps.cache-docker.outputs.cache-hit == 'true'
+
+      - name: Make docker to look override docker-compose.yml only on CI
+        run: mv docker-compose.override.ci.yml docker-compose.override.yml
+
+      - name: Exec download and convert data
         run: |
           make download_and_convert
 
