@@ -1,5 +1,6 @@
 .DS_Store
-data
+/data/*
+!/data/citycode.csv
 node_modules
 .env
 __pycache__
