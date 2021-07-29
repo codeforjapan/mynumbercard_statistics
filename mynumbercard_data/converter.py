@@ -142,7 +142,7 @@ class Converter:
         Returns:
             list: converted data
         """
-        new_list = self._convert(_list) if _list else self._convert(self._list)
+        new_list = self._convert(_list, created_at) if _list else self._convert(self._list, created_at)
         # normalize glyph data
         new_list = list(map(lambda x:
                             list(map(lambda y: normalize(y),
@@ -154,11 +154,12 @@ class Converter:
                                   new_list[1:]))
         return ret
 
-    def _convert(self, list) -> list:
+    def _convert(self, list, created_at: date) -> list:
         """convet list data, mainly used for subclass (overrided from subclasses)
 
         Args:
             list ([type]): list of the data
+            created_at (date): created date
 
         Returns:
             list: converted list
@@ -230,12 +231,13 @@ class Processor:
 
 
 class TypesConverter(Converter):
-    def _convert(self, _list: list) -> list:
+    def _convert(self, _list: list, created_at: date) -> list:
         """
         "区分","","人口
         （H29.1.1時点）","交付枚数
         （H29.8.31時点）","人口に対する交付枚数率"
         というヘッダになっているので基準日を抜き出して列として追加する
+        ただし、R3年6月から、交付枚数から基準日が消えているので、デフォルト日付を使う
         """
         population_ymd = None
         card_ymd = None
@@ -245,6 +247,8 @@ class TypesConverter(Converter):
         card_date = StringUtil.extract_date_from_header(_list[0][3])
         if (card_date is not None):
             card_ymd = card_date.strftime('%Y/%m/%d')
+        else:
+            card_ymd = created_at.strftime('%Y/%m/%d')
         header = ["区分", "人口", "交付枚数",
                   "人口に対する交付枚数率", "人口算出基準日", "交付枚数算出基準日"]
         data = list(map(lambda x: x + [population_ymd, card_ymd], _list[1:]))
@@ -253,18 +257,23 @@ class TypesConverter(Converter):
 
 
 class DemographicConverter(Converter):
-    def _convert(self, _list: list) -> list:
+    def _convert(self, _list: list, created_at: date) -> list:
         """
         CSVのヘッダが
         ["年齢","人口（H28.1.1時点）","","","交付件数（H29.5.15時点）","","","交付率","","","全体に対する交付件数割合","",""]
         ["","男","女","計","男","女","計","男","女","計","男","女","計"]
         という2段組になってしまっているので、ヘッダを一行にして、（＊時点）の部分を抜き出して最終列に加える処理を行う
+        ただし、R3年6月から、交付枚数から基準日が消えているので、デフォルト日付を使う
         """
         _list = StringUtil.fix_numberfield_error(_list, 1, 13, [0, 1])
+        card_ymd = None
         population_ymd = StringUtil.extract_date_from_header(
             self._list[0][1]).strftime('%Y/%m/%d')
-        card_ymd = StringUtil.extract_date_from_header(
-            self._list[0][4]).strftime('%Y/%m/%d')
+        card_date = StringUtil.extract_date_from_header(_list[0][4])
+        if (card_date is not None):
+            card_ymd = card_date.strftime('%Y/%m/%d')
+        else:
+            card_ymd = created_at.strftime('%Y/%m/%d')
         header = ["年齢", "人口(男)", "人口(女)", "人口(計)", "交付件数(男)",
                   "交付件数(女)", "交付件数(計)",
                   "交付率(男)", "交付率(女)", "交付率(計)",
@@ -277,7 +286,7 @@ class DemographicConverter(Converter):
 
 
 class PrefecturesConverter(Converter):
-    def _convert(self, _list):
+    def _convert(self, _list, created_at: date):
         """"
         ヘッダが
         "都道府県名","総数（人口）
@@ -294,6 +303,8 @@ class PrefecturesConverter(Converter):
         card_date = StringUtil.extract_date_from_header(_list[0][2])
         if (card_date is not None):
             card_ymd = card_date.strftime('%Y/%m/%d')
+        else:
+            card_ymd = created_at.strftime('%Y/%m/%d')
         header = ["都道府県名", "総数（人口）", "交付枚数",
                   "人口に対する交付枚数率", "人口算出基準日", "交付枚数算出基準日"]
         data = list(map(lambda x: x + [population_ymd, card_ymd], _list[1:]))
@@ -310,7 +321,7 @@ class PrefecturesConverter(Converter):
 
 
 class LocalgovsConverter(Converter):
-    def _convert(self, _list):
+    def _convert(self, _list, created_at: date):
         """"
         ヘッダが
         都道府県名","市区町村名","総数（人口）
@@ -326,6 +337,8 @@ class LocalgovsConverter(Converter):
         card_date = StringUtil.extract_date_from_header(_list[0][3])
         if (card_date is not None):
             card_ymd = card_date.strftime('%Y/%m/%d')
+        else:
+            card_ymd = created_at.strftime('%Y/%m/%d')
         header = ["都道府県名", "市区町村名", "総数（人口）",
                   "交付枚数", "人口に対する交付枚数率", "人口算出基準日", "交付件数基準日"]
         if (_list[1][0] == '全国'):  # remove 全国
