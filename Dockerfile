@@ -10,7 +10,7 @@ RUN pip install pipenv \
 
 FROM python:3.8-slim
 
-RUN apt-get update -y && apt-get install -y python-opencv libopencv-dev ghostscript\
+RUN apt-get update -y && apt-get install -y python3-opencv libopencv-dev ghostscript\
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
