@@ -15,7 +15,6 @@ RUN apt-get update -y && apt-get install -y \
         libopencv-dev \
         ghostscript \
         libsm-dev \
-    && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
 ENV PYTHONUNBUFFERED=1
