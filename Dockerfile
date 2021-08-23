@@ -10,8 +10,11 @@ RUN pip install pipenv \
 
 FROM python:3.8-slim
 
-RUN apt-get update -y && apt-get install -y python3-opencv libopencv-dev ghostscript\
-    && apt-get clean \
+RUN apt-get update -y && apt-get install -y \
+        python3-opencv \
+        libopencv-dev \
+        ghostscript \
+        libsm-dev \
     && rm -rf /var/lib/apt/lists/*
 
 ENV PYTHONUNBUFFERED=1
