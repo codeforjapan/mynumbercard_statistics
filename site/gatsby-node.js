@@ -7,7 +7,6 @@ const path = require('path') // jshint ignore:line
 const {
   createFilePath
 } = require(`gatsby-source-filesystem`);
-
 exports.onCreateNode = ({
   node,
   actions,

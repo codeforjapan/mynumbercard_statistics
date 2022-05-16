@@ -13,9 +13,6 @@ interface DataTemplateProps {
           node: {
             name: string;
             base: string;
-            fields: {
-              href: string;
-            };
           };
         }
       ];
@@ -34,9 +31,7 @@ const DataTemplate: React.FC<DataTemplateProps> = ({ data, pageContext }) => (
         <h1>{pageContext.slug}</h1>
         <ul>
           {data.allFile.edges.map(({ node }) => (
-            <li key={node.base}>
-              <a href={node.fields.href}>{node.base}</a>
-            </li>
+            <li key={node.base}></li>
           ))}
         </ul>
       </Container>
