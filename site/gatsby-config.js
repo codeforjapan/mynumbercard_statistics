@@ -1,10 +1,5 @@
-'use strict'
-/* globals module: false */
-/*jshint node: true */
-/*jshint esversion: 6 */
 const siteUrl = 'https://mynumbercard.code4japan.org'
 module.exports = {
-  // jshint ignore:line
   siteMetadata: {
     title: 'マイナンバーカード普及状況ダッシュボード',
     description: 'マイナンバーカードの普及状況をダッシュボード形式で表示するサイトです。CSVデータもダウンロードできます。',
@@ -18,8 +13,11 @@ module.exports = {
       email: 'info0code4japan.org'
     }
   },
-  plugins: [{
-      resolve: 'gatsby-source-filesystem',
+  plugins: [
+    `gatsby-plugin-react-helmet`,
+    `gatsby-plugin-image`,
+    {
+      resolve: `gatsby-source-filesystem`,
       options: {
         name: 'data',
         path: `${__dirname}/../data/out`,
@@ -68,51 +66,6 @@ module.exports = {
       }
     },
     {
-      /**
-       * plugin for providing /feed-1.json.
-       */
-      resolve: `gatsby-plugin-json-output`,
-      options: {
-        siteUrl: siteUrl, // defined on top of plugins
-        // get all files grouped by file name
-        graphQLQuery: `
-          {
-            allFile(filter: {base: {regex: "/.csv$/"}}) {
-              group(field: base) {
-                fieldValue
-                edges {
-                  node {
-                    base
-                    fields {
-                      dir
-                      href
-                    }
-                  }
-                }
-              }
-            }
-          }
-        `,
-        // this method will create feed-1.json
-        serializeFeed: results => {
-          {
-            return results.data.allFile.group.map(group => {
-              return {
-                name: group.fieldValue,
-                files: group.edges.map(edge => {
-                  return {
-                    dir: edge.node.fields.dir,
-                    href: edge.node.fields.href
-                  }
-                })
-              }
-            })
-          }
-        },
-        nodesPerFeedFile: 300
-      }
-    },
-    {
       resolve: `gatsby-plugin-google-analytics`,
       options: {
         // The property ID; the tracking code won't be generated without it
@@ -123,10 +76,11 @@ module.exports = {
         respectDNT: true
       }
     },
+    `gatsby-plugin-styled-components`,
+    `gatsby-transformer-sharp`,
+    `gatsby-plugin-sharp`,
     'gatsby-plugin-emotion',
     'gatsby-plugin-typescript',
-    'gatsby-plugin-sharp',
-    'gatsby-transformer-sharp',
     'gatsby-plugin-react-helmet'
-  ]
+  ],
 }

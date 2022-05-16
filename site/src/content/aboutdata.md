@@ -2,6 +2,7 @@
 path: '/aboutdata'
 date: 2020-07-23T17:12:33.962Z
 title: 'データ形式について'
+slug: '/aboutdata'
 ---
 
 [データ一覧](/data)から、総務省が発行している[「マイナンバーカード交付状況について」](https://www.soumu.go.jp/kojinbango_card/)から取得した CSV ファイルをダウンロードすることができます。総務省の PDF ファイルが公開された日付(YYYYMDD)のフォルダの下に、以下のファイルが存在しています。

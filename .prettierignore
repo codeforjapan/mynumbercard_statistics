@@ -1,0 +1,5 @@
+site/.cache
+site/package.json
+site/package-lock.json
+site/public
+site/src/**/*.js

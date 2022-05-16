@@ -2,7 +2,7 @@ import * as React from 'react'
 import 'modern-normalize'
 import '../styles/normalize'
 
-import Header from '../components/Header'
+import Menu from '../components/Menu'
 import LayoutRoot from '../components/LayoutRoot'
 import LayoutMain from '../components/LayoutMain'
 import Head from '../components/Head'
@@ -19,7 +19,7 @@ const IndexLayout: React.FC<Props> = ({ children, title }) => {
     <>
       <Head title={title}/>
       <LayoutRoot>
-        <Header title={siteMetadata.title} />
+        <Menu title={siteMetadata.title} />
         <LayoutMain>{children}</LayoutMain>
       </LayoutRoot>
     </>

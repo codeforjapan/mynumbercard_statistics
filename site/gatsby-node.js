@@ -7,7 +7,6 @@ const path = require('path') // jshint ignore:line
 const {
   createFilePath
 } = require(`gatsby-source-filesystem`);
-
 exports.onCreateNode = ({
   node,
   actions,
@@ -28,6 +27,12 @@ exports.onCreateNode = ({
           node,
           name: 'slug',
           value: `data/${node.name}`
+        });
+      } else {
+        createNodeField({
+          node,
+          name: 'slug',
+          value: `${node.name}`
         });
       }
       break;
@@ -128,9 +133,6 @@ exports.createPages = async ({
             base
             internal {
               type
-            }
-            fields {
-              slug
             }
           }
         }
