@@ -1,24 +1,24 @@
-import * as React from 'react'
-import { graphql } from 'gatsby'
+import * as React from "react";
+import { graphql } from "gatsby";
 
-import Page from '../components/Page'
-import Container from '../components/Container'
-import IndexLayout from '../layouts'
+import Page from "../components/Page";
+import Container from "../components/Container";
+import IndexLayout from "../layouts";
 
 interface PageTemplateProps {
   data: {
     markdownRemark: {
-      html: string
-      excerpt: string
+      html: string;
+      excerpt: string;
       frontmatter: {
-        title: string
-      }
-    }
-  }
+        title: string;
+      };
+    };
+  };
 }
 
 const PageTemplate: React.FC<PageTemplateProps> = ({ data }) => (
-  <IndexLayout title={data.markdownRemark.frontmatter.title} >
+  <IndexLayout title={data.markdownRemark.frontmatter.title}>
     <Page>
       <Container>
         <h1>{data.markdownRemark.frontmatter.title}</h1>
@@ -27,9 +27,9 @@ const PageTemplate: React.FC<PageTemplateProps> = ({ data }) => (
       </Container>
     </Page>
   </IndexLayout>
-)
+);
 
-export default PageTemplate
+export default PageTemplate;
 export const query = graphql`
   query PageTemplateQuery($slug: String!) {
     markdownRemark(fields: { slug: { eq: $slug } }) {
@@ -40,4 +40,4 @@ export const query = graphql`
       }
     }
   }
-`
+`;
