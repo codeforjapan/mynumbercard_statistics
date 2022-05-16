@@ -12,9 +12,6 @@ interface DirProps {
           node: {
             name: string
             relativePath: string
-            fields: {
-              slug: string
-            }
           }
         }
       ]
@@ -37,11 +34,6 @@ const Dirs: React.FC<DirProps> = ({ data }) => (
           にも同じデータが保存してあります。
         </p>
         <ul>
-          {data.allDirectory.edges.map(({ node }) => (
-            <li key={node.fields.slug}>
-              <Link to={`/${node.fields.slug}`}>{node.name}</Link>
-            </li>
-          ))}
         </ul>
       </Container>
     </Page>
@@ -51,14 +43,11 @@ const Dirs: React.FC<DirProps> = ({ data }) => (
 export default Dirs
 export const query = graphql`
   query {
-    allDirectory(filter: { relativePath: { ne: "" }, fields: { slug: { regex: "/.*/" } } }) {
+    allDirectory(filter: { relativePath: { ne: "" }  }) {
       edges {
         node {
           name
           relativePath
-          fields {
-            slug
-          }
         }
       }
     }

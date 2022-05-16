@@ -1,12 +1,11 @@
 import * as React from 'react'
-import styled from '@emotion/styled'
+import styled from 'styled-components'
 import { transparentize } from 'polished'
 import { Link } from 'gatsby'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGithub } from '@fortawesome/free-brands-svg-icons'
 import { faBars } from '@fortawesome/free-solid-svg-icons'
-import Container from './Container'
 import { heights, dimensions, colors } from '../styles/variables'
 
 type LinkType = {
@@ -33,9 +32,10 @@ const StyledHeader = styled.header`
   padding: 0 ${dimensions.containerPadding}rem;
   background-color: ${colors.brand};
   color: ${transparentize(0.5, colors.white)};
+  theme: black;
 `
 
-const HeaderInner = styled(Container)`
+const HeaderInner = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -51,7 +51,7 @@ const HomepageLink = styled(Link)`
     margin-right: 40px;
   }
 `
-const GithubLink = styled(Container)`
+const GithubLink = styled.div`
   color: ${colors.white};
   font-size: 1.5rem;
   font-weight: 600;
@@ -127,7 +127,7 @@ interface HeaderProps {
   title: string
 }
 
-const Header: React.FC<HeaderProps> = ({ title }) => {
+const Menu: React.FC<HeaderProps> = ({ title }) => {
   const [isOpen, setOpen] = React.useState(false)
   const toggleOpen = React.useCallback(() => setOpen(prevState => !prevState), [])
   return (
@@ -157,4 +157,4 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
     </StyledHeader>
   )
 }
-export default Header
+export default Menu

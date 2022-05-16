@@ -8,7 +8,8 @@ const StyledLayoutMain = styled.main`
 `
 
 interface LayoutMainProps {
-  className?: string
+  children: React.ReactNode;
+  className?: string;
 }
 
 const LayoutMain: React.FC<LayoutMainProps> = ({ children, className }) => (

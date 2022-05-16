@@ -1,10 +1,5 @@
-'use strict'
-/* globals module: false */
-/*jshint node: true */
-/*jshint esversion: 6 */
 const siteUrl = 'https://mynumbercard.code4japan.org'
 module.exports = {
-  // jshint ignore:line
   siteMetadata: {
     title: 'マイナンバーカード普及状況ダッシュボード',
     description: 'マイナンバーカードの普及状況をダッシュボード形式で表示するサイトです。CSVデータもダウンロードできます。',
@@ -18,8 +13,11 @@ module.exports = {
       email: 'info0code4japan.org'
     }
   },
-  plugins: [{
-      resolve: 'gatsby-source-filesystem',
+  plugins: [
+    `gatsby-plugin-react-helmet`,
+    `gatsby-plugin-image`,
+    {
+      resolve: `gatsby-source-filesystem`,
       options: {
         name: 'data',
         path: `${__dirname}/../data/out`,
@@ -123,10 +121,11 @@ module.exports = {
         respectDNT: true
       }
     },
+    `gatsby-plugin-styled-components`,
+    `gatsby-transformer-sharp`,
+    `gatsby-plugin-sharp`,
     'gatsby-plugin-emotion',
     'gatsby-plugin-typescript',
-    'gatsby-plugin-sharp',
-    'gatsby-transformer-sharp',
     'gatsby-plugin-react-helmet'
-  ]
+  ],
 }

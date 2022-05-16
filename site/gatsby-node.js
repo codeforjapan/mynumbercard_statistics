@@ -29,6 +29,12 @@ exports.onCreateNode = ({
           name: 'slug',
           value: `data/${node.name}`
         });
+      } else {
+        createNodeField({
+          node,
+          name: 'slug',
+          value: `${node.name}`
+        });
       }
       break;
     }
@@ -128,9 +134,6 @@ exports.createPages = async ({
             base
             internal {
               type
-            }
-            fields {
-              slug
             }
           }
         }

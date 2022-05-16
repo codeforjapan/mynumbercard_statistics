@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Global, css } from '@emotion/core'
+import { Global, css } from '@emotion/react'
 import styled from '@emotion/styled'
 import normalize from '../styles/normalize'
 
@@ -10,6 +10,7 @@ const StyledLayoutRoot = styled.div`
 `
 
 interface LayoutRootProps {
+  children: React.ReactNode
   className?: string
 }
 
