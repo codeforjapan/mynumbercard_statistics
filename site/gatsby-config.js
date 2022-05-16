@@ -66,51 +66,6 @@ module.exports = {
       }
     },
     {
-      /**
-       * plugin for providing /feed-1.json.
-       */
-      resolve: `gatsby-plugin-json-output`,
-      options: {
-        siteUrl: siteUrl, // defined on top of plugins
-        // get all files grouped by file name
-        graphQLQuery: `
-          {
-            allFile(filter: {base: {regex: "/.csv$/"}}) {
-              group(field: base) {
-                fieldValue
-                edges {
-                  node {
-                    base
-                    fields {
-                      dir
-                      href
-                    }
-                  }
-                }
-              }
-            }
-          }
-        `,
-        // this method will create feed-1.json
-        serializeFeed: results => {
-          {
-            return results.data.allFile.group.map(group => {
-              return {
-                name: group.fieldValue,
-                files: group.edges.map(edge => {
-                  return {
-                    dir: edge.node.fields.dir,
-                    href: edge.node.fields.href
-                  }
-                })
-              }
-            })
-          }
-        },
-        nodesPerFeedFile: 300
-      }
-    },
-    {
       resolve: `gatsby-plugin-google-analytics`,
       options: {
         // The property ID; the tracking code won't be generated without it
