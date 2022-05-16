@@ -12,6 +12,7 @@ const StyledPage = styled.div`
 `
 
 interface PageProps {
+  children: React.ReactNode
   className?: string
 }
 

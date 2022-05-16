@@ -13,6 +13,7 @@ const StyledContainer = styled.div`
 `
 
 interface ContainerProps {
+  children: React.ReactNode
   className?: string
 }
 
