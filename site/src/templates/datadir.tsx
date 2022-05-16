@@ -1,9 +1,9 @@
-import * as React from 'react'
-import { graphql, Link } from 'gatsby'
+import * as React from "react";
+import { graphql, Link } from "gatsby";
 
-import Page from '../components/Page'
-import Container from '../components/Container'
-import IndexLayout from '../layouts'
+import Page from "../components/Page";
+import Container from "../components/Container";
+import IndexLayout from "../layouts";
 
 interface DataTemplateProps {
   data: {
@@ -11,19 +11,19 @@ interface DataTemplateProps {
       edges: [
         {
           node: {
-            name: string
-            base: string
+            name: string;
+            base: string;
             fields: {
-              href: string
-            }
-          }
+              href: string;
+            };
+          };
         }
-      ]
-    }
-  }
+      ];
+    };
+  };
   pageContext: {
-    slug: string
-  }
+    slug: string;
+  };
 }
 
 const DataTemplate: React.FC<DataTemplateProps> = ({ data, pageContext }) => (
@@ -42,12 +42,12 @@ const DataTemplate: React.FC<DataTemplateProps> = ({ data, pageContext }) => (
       </Container>
     </Page>
   </IndexLayout>
-)
+);
 
-export default DataTemplate
+export default DataTemplate;
 export const query = graphql`
-  query DataTemplateQuery($slug: String!) {
-    allFile(filter: { fields: { slug: { eq: $slug } } }) {
+  query DataTemplateQuery {
+    allFile {
       edges {
         node {
           name
@@ -59,4 +59,4 @@ export const query = graphql`
       }
     }
   }
-`
+`;
