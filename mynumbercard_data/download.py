@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Usage: download.py [-h] [--all]
 
 Read (all) PDF file and save as CSV file of extracted tables.
@@ -46,7 +47,6 @@ def loadPDF(filepath: str):
 
 
 def downloadFiles(elem, loaded: dict):
-
     # read PDF links
     links = elem.findall('a')
     if (len(links) == 1):
@@ -77,9 +77,21 @@ def downloadFiles(elem, loaded: dict):
                 print("file format is unknown")
 
 
+def downloadSingleFile(month: str, elem, loaded: dict):
+    # if a tag is provided, load it
+    id = getFileID(elem.get('href'))
+    if (loaded.get(id)):
+        print("skip " + month)
+    else:
+        print("get " + month)
+        loadPDF(elem.get('href'))
+        loaded[id] = month
+    return
+
+
 if __name__ == "__main__":
     # url of the mynumber card PDF
-    PDF_URL = "https://www.soumu.go.jp/kojinbango_card/"
+    PDF_URL = "https://www.soumu.go.jp/kojinbango_card/kofujokyo.html"
     ABSOLUTE_URL = "https://www.soumu.go.jp/kojinbango_card/"
     # DATA FILE
     DATA_FILE = "./data/loaded_files.json"
@@ -95,20 +107,27 @@ if __name__ == "__main__":
     tree = lxml.html.fromstring(html)
     tree.make_links_absolute(ABSOLUTE_URL)
     years = tree.xpath(
-        '//*[@id="contentsWrapper"]/div[2]/div[2]/div[4]/ul/li')
+        '//*[@id="contentsWrapper"]/div[2]/div/div[3]/ul/li')
 
     print(years)
     for page in years:
         for link in page.findall('a'):
             print('scan ' + link.get('href'))
             html = urllib.request.urlopen(link.get('href')).read()
-            tree = lxml.html.fromstring(html)
-            tree.make_links_absolute(ABSOLUTE_URL)
-            resources = tree.xpath(
+            tree2 = lxml.html.fromstring(html)
+            tree2.make_links_absolute(ABSOLUTE_URL)
+            resources = tree2.xpath(
                 '//*[@id="contentsWrapper"]/div[@class="contentsBody"]//ul/li')
             for data in resources:
                 downloadFiles(data, loaded)
+    print('current year')
+    links = tree.xpath(
+        '//dt/text()[contains(.,"全体資料")]/following-sibling::a[1]')
+    texts = tree.xpath(
+        '//dt/text()[contains(.,"全体資料")]/preceding-sibling::text()[1]')
+    for idx, link in enumerate(links):
+        downloadSingleFile(texts[idx].strip(), link, loaded)
 
-    # save loaded files data
-    with open(DATA_FILE, 'w', encoding='utf-8') as f:
-        json.dump(loaded, f, indent=2, ensure_ascii=False)
+# save loaded files data
+with open(DATA_FILE, 'w', encoding='utf-8') as f:
+    json.dump(loaded, f, indent=2, ensure_ascii=False)
