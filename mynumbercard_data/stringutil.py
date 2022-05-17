@@ -45,6 +45,7 @@ class StringUtil():
         janera = Japanera()
         match = re.search(r'[（(](.*)[)）]', title)
         if (not match):
+            # ()が無いケースがでてきたので
             datesource = re.search(
                 r'(令和)([0-9元]*)年(.*)月(.*)日', title)
             if (not datesource or len(datesource.groups()) < 4):
