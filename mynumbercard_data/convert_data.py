@@ -63,6 +63,7 @@ if __name__ == "__main__":
         processor = Processor(date)  # create processor instance
         print('Create file for the date {0}'.format(date))
         target_dir = RAW_DIR + '/' + key
+        print('Scan {0}'.format(target_dir))
         if (not os.path.exists(target_dir)):
             print(
                 'The data for the key {0} does not exists. Skip this key'
@@ -80,6 +81,8 @@ if __name__ == "__main__":
         # save extended data
         if (key == list(loaded.keys())[-1]):
             # last file data as latest data
+            print('save CSVs to {0}'.format(OUT_DIR + "/" + "latest"))
             processor.saveFiles(OUT_DIR + "/" + "latest")
         else:
+            print('save CSVs to {0}'.format(OUT_DIR + "/" + ymd))
             processor.saveFiles(OUT_DIR + "/" + ymd)
