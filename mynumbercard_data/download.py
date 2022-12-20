@@ -122,9 +122,11 @@ if __name__ == "__main__":
                 downloadFiles(data, loaded)
     print('current year')
     links = tree.xpath(
-        '//dt/text()[contains(.,"全体資料")]/following-sibling::a[1]')
+        '//text()[contains(.,"令和4年度")]/../../dd/*/li/a[1]')
     texts = tree.xpath(
-        '//dt/text()[contains(.,"全体資料")]/preceding-sibling::text()[1]')
+        '//text()[contains(.,"令和4年度")]/../../dd/*/li/text()[contains(.,"令和4年")]')
+    print(links)
+    print(texts)
     for idx, link in enumerate(links):
         downloadSingleFile(texts[idx].strip(), link, loaded)
 
