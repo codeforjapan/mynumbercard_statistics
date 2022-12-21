@@ -1,4 +1,5 @@
 import re
+import calendar
 from japanera import Japanera
 from datetime import datetime
 
@@ -16,21 +17,38 @@ class StringUtil():
         """
         janera = Japanera()
         header = header.replace("\n", '')
+        end_of_month = False
         if (len(re.findall(r'[【（(](.*?)[)）】]', header)) == 0):
             print('Error: {0} has no date text.'.format(header))
             return None
         match = re.findall(r'[【（(](.*?)[)）】]', header)[-1]
         datesource = re.search(r'([^0-9元]*)([0-9元]*)\.(.*)\.(.*)時点', match)
         if (not datesource):
-            print('Error: {0} has no date text.'.format(header))
-            return None
-        mydate = sorted(janera.strptime('{0}{1}年{2}月{3}日'.format(
-            datesource.groups()[0],
-            datesource.groups()[1].replace('元', '1').zfill(2),
-            datesource.groups()[2].zfill(2),
-            datesource.groups()[3].zfill(2)
-        ), "%-a%-o年%m月%d日"), key=lambda x: x.year)
-        return mydate[-1]
+            datesource = re.search(r'([^0-9元]*)([0-9元]*)\.(.*)末時点', match)
+            if (not datesource):
+                print('Error: {0} has no date text.'.format(header))
+                return None
+            else:
+                end_of_month = True
+        if (end_of_month):
+            mydate = sorted(janera.strptime('{0}{1}年{2}月01日'.format(
+                datesource.groups()[0],
+                datesource.groups()[1].replace('元', '1').zfill(2),
+                datesource.groups()[2].zfill(2)
+            ), "%-a%-o年%m月%d日"), key=lambda x: x.year)
+            return StringUtil.get_last_date(mydate[-1])
+        else:
+            mydate = sorted(janera.strptime('{0}{1}年{2}月{3}日'.format(
+                datesource.groups()[0],
+                datesource.groups()[1].replace('元', '1').zfill(2),
+                datesource.groups()[2].zfill(2),
+                datesource.groups()[3].zfill(2)
+            ), "%-a%-o年%m月%d日"), key=lambda x: x.year)
+            return mydate[-1]
+
+    @staticmethod
+    def get_last_date(dt):
+        return dt.replace(day=calendar.monthrange(dt.year, dt.month)[1])
 
     @staticmethod
     def extract_date_from_title(title: str) -> datetime:
@@ -44,23 +62,42 @@ class StringUtil():
         """
         janera = Japanera()
         match = re.search(r'[（(](.*)[)）]', title)
+        end_of_month = False
         if (not match):
             # ()が無いケースがでてきたので
             datesource = re.search(
                 r'(令和)([0-9元]*)年(.*)月(.*)日', title)
             if (not datesource or len(datesource.groups()) < 4):
-                return False
+                # "末日" 対応
+                datesource = re.search(
+                    r'(令和)([0-9元]*)年(.*)月末', title)
+                if (not datesource or len(datesource.groups()) < 3):
+                    return False
+                else:
+                    end_of_month = True
         else:
             datesource = re.search(
                 r'([^0-9元]*)([0-9元]*)年(.*)月(.*)日', match.groups()[0])
         print(datesource.groups())
-        mydate = janera.strptime('{0}{1}年{2}月{3}日'.format(
-            datesource.groups()[0],
-            datesource.groups()[1].replace('元', '1').zfill(2),
-            datesource.groups()[2].zfill(2),
-            datesource.groups()[3].zfill(2)
-        ), "%-E%-o年%m月%d日")
-        return mydate[0]
+        if (end_of_month):
+            mydate = janera.strptime('{0}{1}年{2}月01日'.format(
+                datesource.groups()[0],
+                datesource.groups()[1].replace('元', '1').zfill(2),
+                datesource.groups()[2].zfill(2)
+            ), "%-E%-o年%m月%d日")
+            print('{0}{1}年{2}月01日'.format(
+                datesource.groups()[0],
+                datesource.groups()[1].replace('元', '1').zfill(2),
+                datesource.groups()[2].zfill(2)))
+            return StringUtil.get_last_date(mydate[0])
+        else:
+            mydate = janera.strptime('{0}{1}年{2}月{3}日'.format(
+                datesource.groups()[0],
+                datesource.groups()[1].replace('元', '1').zfill(2),
+                datesource.groups()[2].zfill(2),
+                datesource.groups()[3].zfill(2)
+            ), "%-E%-o年%m月%d日")
+            return mydate[0]
 
     @staticmethod
     def to_number(text: str):
