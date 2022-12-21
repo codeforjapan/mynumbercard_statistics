@@ -89,7 +89,6 @@ class StringUtil():
                 datesource.groups()[0],
                 datesource.groups()[1].replace('元', '1').zfill(2),
                 datesource.groups()[2].zfill(2)))
-            print(mydate)
             return StringUtil.get_last_date(mydate[0])
         else:
             mydate = janera.strptime('{0}{1}年{2}月{3}日'.format(
